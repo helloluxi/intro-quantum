@@ -1,0 +1,24 @@
+{
+  "autostart": true,
+  "allowLAN": true,
+  "katexMacros": {
+    "\\abs": "\\left| #1 \\right|",
+    "\\ket": "\\lvert #1 \\rangle",
+    "\\bra": "\\langle #1 \\rvert",
+    "\\ip": "\\langle #1 | #2 \\rangle",
+    "\\dyad": "\\ket{#1} \\bra{#2}",
+    "\\pmat": "\\begin{pmatrix} #1 \\end{pmatrix}",
+    "\\bmp": "\\bm{P}",
+    "\\pp": "\\left( #1 \\right)",
+    "\\bb": "\\left[ #1 \\right]",
+    "\\kk": "\\left\\{ #1 \\right\\}",
+    "\\var": "\\varphi",
+    "\\hf": "\\frac{ #1 }{2}",
+    "\\tr": "\\operatorname{tr}",
+    "\\dd": "\\,\\mathrm{d}",
+    "\\enc": "\\mathrm{Enc}",
+    "\\a": "\\hat{a}",
+    "\\D": "\\mathcal{D}\\left( #1 \\right)",
+    "\\RR": "\\mathcal{R}\\left( #1 \\right)"
+  }
+}
