@@ -25,88 +25,116 @@
 
 
 
-## Qubits: A Bit That Lives on a Sphere
+## Schrödinger's Cat
+
+\todo{Figure: Schrödinger's cat}
+
+
+
+## Qubits
+
+\row
+\figure[.3]{cbit.svg}{Classical bit}
+&nbsp;
+\figure[.3]{qbit.svg}{Quantum bit (qubit)}
+\endrow
+
+
+
+## Quantum Entanglement
 
 \columns
-A classical bit is $0$ or $1$. A qubit is a \strong{normalized superposition}:
+In an $n$-qubit system, a state is usually written as
 $$
-\ket{\psi} = \cos\hf{\theta}\ket{0} + e^{i\phi}\sin\hf{\theta}\ket{1}.
+\ket{\psi} = c_0 \ket{00\ldots0} + c_1 \ket{00\ldots1} + \cdots + c_{2^n-1} \ket{11\ldots1}.
 $$
-
-- Two real numbers $(\theta, \phi)$ define a point on the \strong{Bloch sphere}.
-- Reading it out collapses it to $0$ or $1$ with probabilities $\cos^2\hf{\theta}$ and $\sin^2\hf{\theta}$.
+In contrast, a product state of $n$ \strong{unentangled} qubits has the form
+$$
+\ket{\psi} = (a_0\ket{0}+b_0\ket{1})(a_1\ket{0}+b_1\ket{1})\cdots(a_{n-1}\ket{0}+b_{n-1}\ket{1}).
+$$
+Quantum entanglement makes the dimension of the state space grow \strong{exponentially}.
 
 \column
 \row
-\figure[.6]{bloch.png}{The Bloch sphere}
+\figure[.7]{entanglement.svg}{Quantum entanglement}
 \endrow
 \endcolumn
 
 
 
-## From One Qubit to Many: Exponential State Space
+## Unitary Operations
+
+\row
+\figure[.23]{bloch.png}{Bloch sphere<br>$\ket{\psi} = \cos\frac{\theta}{2}\ket{0} + e^{i\phi}\sin\frac{\theta}{2}\ket{1}$}
+&nbsp;
+\figure[.27]{pauli.png}{Pauli-X gate}
+\endrow
+
+
+
+## Noise
 
 \columns
-$n$ independent qubits - a \strong{product state} - need only $2n$ numbers:
+A \strong{density operator} describes a quantum state that may include classical uncertainty:
 $$
-(a_0\ket{0}+b_0\ket{1})\cdots(a_{n-1}\ket{0}+b_{n-1}\ket{1}).
-$$
-
-A general \strong{entangled} state needs all $2^n$:
-$$
-\ket{\psi} = c_0 \ket{0\ldots0} + \cdots + c_{2^n-1} \ket{1\ldots1}.
+\rho = \sum_k p_k \ket{\psi_k}\bra{\psi_k}.
 $$
 
-\strong{Entanglement is what makes the state space blow up exponentially} - the source of quantum power, and of the cost of simulating it.
+- Pure state: $\rho = \ket{\psi}\bra{\psi}$.
+- Mixed state: a probability mixture of possible states.
+- Noise and evolution are modeled by \strong{quantum channels}:
+  $$\rho \mapsto \mathcal{E}(\rho).$$
 
 \column
 \row
-\figure[.8]{entanglement.svg}{Quantum entanglement}
+\figure[1]{mixed.png}{Mixed state under bit-flip noise}
 \endrow
 \endcolumn
 
 
 
-## Circuits and Measurement
+## Measurement
 
-\columns
-Every gate is a unitary matrix acting on the state:
+A general quantum measurement is described by a \strong{positive operator-valued measure} (POVM) $\{ M_x \}$, satisfying $M_x \geq 0$ and $\sum_x M_x = I$.
+The probability of observing outcome $x$ is
+$$ p(x) = \tr(\rho M_x). $$
 
-- Single-qubit gates: $2\times 2$ matrices.
-- Two-qubit gates can create entanglement.
-- A circuit prepares a state, evolves it, and then measures it.
-
-\strong{The catch:} one run gives one sampled outcome. Information comes from many shots and from arranging interference so useful outcomes have high probability.
-
-\column
 \row
-\figure[.7]{pauli.png}{Pauli-$X$ gate}
+\figure[.4]{interferometer.png}{}
 \endrow
-\endcolumn
-
-\todo{Optional: add a concise analogy for why superposition is not classical parallelism.}
 
 
 
-## Noise: The Realistic Picture
+## Grover Search Algorithm
 
 \columns
-Real hardware is noisy, so we use a \strong{density operator} $\rho = \sum_k p_k \ket{\psi_k}\bra{\psi_k}$ instead of a single vector.
+\strong{Grover search} finds a marked item among $N$ unsorted items:
+- A classical algorithm needs $O(N)$ queries.
+- Grover's algorithm needs only $O(\sqrt{N})$ queries.
 
-- Pure state: $\rho = \ket{\psi}\bra{\psi}$; otherwise mixed.
-- Evolution becomes a \strong{quantum channel}:
-  $$ \rho \mapsto \sum_k K_k \rho K_k^\dagger, \qquad \sum_k K_k^\dagger K_k = I. $$
-- Noise limits the information and computation we can extract.
+\strong{Core idea:}
+- Two reflections = one rotation.
+- Measure when near target.
+
+
 
 \column
 \row
-\figure[.85]{mixed.png}{A bit-flip channel on the Bloch sphere}
+\figure[.7]{grover.svg}{Geometric interpretation}
 \endrow
 \endcolumn
 
 
 
-## Part I: Quantum Metrology
+## TODO: CUDA Simulation? Mention RSA?
+
+
+
+## 
+
+\bcenter{Part I: Quantum Metrology}
+
+## Quantum Metrology
 
 \columns
 \strong{Metrology} is the science of measurement.
@@ -127,7 +155,7 @@ $$
 
 
 
-## Two Scaling Laws
+## Scaling Laws
 
 \columns
 \strong{Standard quantum limit (SQL)}
@@ -150,7 +178,7 @@ The usual story: better probe states can change the scaling.
 
 
 
-## Fisher Information: Local Estimation
+## Fisher Information
 
 \columns
 For a measurement $M=\{M_x\}$ with probabilities $p(x|\phi)=\tr(\rho_\phi M_x)$,
@@ -198,7 +226,7 @@ are indistinguishable.
 
 
 
-## Mutual Information: Global Estimation
+## Mutual Information
 
 \columns
 Mutual information measures how many bits about $\Phi$ are learned from the outcome $X$:
@@ -218,7 +246,7 @@ $$
 
 
 
-## My Work: Bits Returned by Quantum Estimation
+## My Work: Mutual Information Bound by Fisher Information
 
 \columns
 \strong{Question:} how many bits can any measurement extract from a quantum parameter?
@@ -242,7 +270,7 @@ $$
 
 
 
-## Part II: Quantum Signal Processing
+## Quantum Signal Processing
 
 \columns
 Many quantum algorithms reduce to one problem:
@@ -262,7 +290,7 @@ Classical analogy:
 
 
 
-## Block Encoding: Putting a Matrix in a Circuit
+## Block Encoding
 
 To compute with a matrix $A$ on a quantum computer, we hide it in the corner of a larger unitary $U_A$:
 $$
@@ -278,7 +306,7 @@ $$
 
 
 
-## QSVT: Functions of a Matrix's Spectrum
+## QSVT
 
 \columns
 \strong{Quantum Singular Value Transformation (QSVT)} applies a polynomial $P$ to the eigen-/singular values of $A$:
@@ -297,7 +325,7 @@ $$
 
 
 
-## QSVT: One Primitive, Many Algorithms
+## QSVT (cont.)
 
 \columns
 ### Hamiltonian Simulation
@@ -325,7 +353,7 @@ $$
 
 
 
-## QSP: A Polynomial from a Circuit
+## QSP
 
 \columns
 Quantum signal processing (QSP) builds a polynomial transformation by alternating:
@@ -344,7 +372,7 @@ In standard QSP/QSVT, a circuit essentially produces one scalar polynomial outpu
 
 
 
-## My Work: $U(N)$-QSP
+## My Work: U(N)-QSP
 
 \columns
 \strong{Idea:} replace the one-qubit auxiliary system by an $N$-dimensional auxiliary register.
@@ -371,7 +399,11 @@ with singular-value constraints replacing scalar boundedness constraints.
 
 
 
-## Part III: Quantum Simulation
+## 
+
+\bcenter{Part III: Quantum Simulation}
+
+## Quantum Simulation
 
 \columns
 ### Discrete Variable (DV)
@@ -416,7 +448,7 @@ $$
 
 
 
-## Fock Encoding: The Direct Route Is Dense
+## Fock Encoding
 
 \columns
 The textbook approach truncates Fock levels:
@@ -442,7 +474,7 @@ and displacement involves generalized Laguerre polynomials.
 
 
 
-## Position Encoding: Store the Wave Function
+## Position Encoding
 
 \columns
 A CV state has a position wave function $\psi(q)$. Instead of storing Fock coefficients, sample the wave function on a grid:
@@ -462,7 +494,7 @@ $$
 
 
 
-## Why It Works: Diagonalize in the Right Basis
+## Why It Works
 
 \columns
 Position operators are diagonal in the position grid; momentum operators are diagonal in the momentum grid.
@@ -487,7 +519,7 @@ $$
 
 
 
-## My Work: Efficient Qubit Simulation of Hybrid CV-DV Gates
+## My Work: Qubit Simulation of Hybrid CV-DV Quantum Systems
 
 \columns
 \strong{Result:} Gaussian and conditional-Gaussian gates can be simulated on qubit registers with
