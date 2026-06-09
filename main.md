@@ -1,22 +1,24 @@
-# Brief Introduction to Quantum Computing 
+# Quantum Metrology, Signal Processing, and Simulation
 
 \subtitle{Luca Lu}
 \subsubtitle{DevTech Engineer, NVIDIA}
 \today{en-US}
 \graphicspath{fig}
 
+\todo{Opening hook: add a 20-30 second bridge for a technical computing audience. Suggested direction: computation is limited by representation, memory, and structured linear algebra; quantum computing changes all three at once.}
+
 
 
 ## About Me
 
 \columns[7fr 4fr]
-- \strong{2017–2021}: B.Sc. in Applied Mathematics (minor in Physics), Zhejiang University, China
+- \strong{2017-2021}: B.Sc. in Applied Mathematics (minor in Physics), Zhejiang University, China
   - Majorana stellar representation.
-- \strong{2021–2025}: Ph.D. in Applied Mathematics, Zhejiang University, China
+- \strong{2021-2025}: Ph.D. in Applied Mathematics, Zhejiang University, China
   - Quantum amplitude estimation.
-- \strong{Sep 2023–Dec 2023}: Visiting scholar, University of Pavia, Italy
+- \strong{Sep 2023-Dec 2023}: Visiting scholar, University of Pavia, Italy
   - Global quantum metrology.
-- \strong{Aug 2024–Aug 2025}: Visiting scholar, North Carolina State University, USA
+- \strong{Aug 2024-Aug 2025}: Visiting scholar, North Carolina State University, USA
   - Quantum signal processing;
   - Qubit simulation of hybrid oscillator-qubit systems.
 \column
@@ -25,39 +27,39 @@
 
 
 
-## Outline
+## Roadmap
 
-- Why a quantum talk for CUDA developers?
-- Qubits, superposition, entanglement
-- Gates, circuits, and measurement
-- Noise: the realistic picture
-- What you can compute: Grover, block encoding, QSVT
-- A peek at my research, including simulating continuous-variable hardware on qubits
+This talk is not a full survey. The goal is to build enough background to understand three research stories.
+
+- \strong{Quantum metrology}: how much information can a measurement reveal?
+- \strong{Quantum signal processing}: how do quantum algorithms transform matrices?
+- \strong{Quantum simulation}: how do we represent analog quantum hardware on qubits?
+
+\strong{Pattern for each part:} background first, then one slide for my work.
+
+\todo{Add one sentence tying metrology, signal processing, and simulation together in your own voice.}
 
 
 
-## Why Should a CUDA Developer Care?
+## Minimal Quantum Vocabulary
 
 \columns
-A quantum state of $n$ qubits is just a complex vector of length $2^n$:
-$$
-\ket{\psi} = \pp{c_0,\, c_1,\, \ldots,\, c_{2^n-1}}^\top, \qquad \sum_k \abs{c_k}^2 = 1.
-$$
+\strong{State}
+- The mathematical object describing what the system can do next.
+- For $n$ qubits, a pure state is a normalized vector in $\mathbb{C}^{2^n}$.
 
-- A quantum \strong{gate} is a unitary matrix-vector product on that vector.
-- Simulating $n$ qubits = storing and multiplying a $2^n$ array.
-- $n = 40$ qubits $\approx$ a trillion complex amplitudes.
-
-\strong{This is a dense linear-algebra problem at extreme scale — exactly what GPUs are built for.}
+\strong{Operation}
+- A gate is a reversible linear transformation.
+- A circuit is a sequence of gates.
 
 \column
-\row
-\figure[.5]{cbit.svg}{Classical bit}
-\figure[.5]{qbit.svg}{Qubit}
-\endrow
-\endcolumn
+\strong{Measurement}
+- A measurement produces one classical outcome sampled from a probability distribution.
+- The amplitudes are not directly readable.
 
-<!-- TODO (you): add a personal one-liner on how you got into this / why NVIDIA cares. -->
+\strong{Noise}
+- Real devices are open systems, so states become density operators and gates become channels.
+\endcolumn
 
 
 
@@ -69,8 +71,8 @@ $$
 \ket{\psi} = \cos\hf{\theta}\ket{0} + e^{i\phi}\sin\hf{\theta}\ket{1}.
 $$
 
-- Two real numbers $(\theta, \phi)$ — a point on the \strong{Bloch sphere}.
-- Reading it out collapses it to $0$ or $1$ with probabilities $\cos^2\hf{\theta}$, $\sin^2\hf{\theta}$.
+- Two real numbers $(\theta, \phi)$ define a point on the \strong{Bloch sphere}.
+- Reading it out collapses it to $0$ or $1$ with probabilities $\cos^2\hf{\theta}$ and $\sin^2\hf{\theta}$.
 
 \column
 \row
@@ -83,7 +85,7 @@ $$
 ## From One Qubit to Many: Exponential State Space
 
 \columns
-$n$ independent qubits — a \strong{product state} — needs only $2n$ numbers:
+$n$ independent qubits - a \strong{product state} - need only $2n$ numbers:
 $$
 (a_0\ket{0}+b_0\ket{1})\cdots(a_{n-1}\ket{0}+b_{n-1}\ket{1}).
 $$
@@ -93,7 +95,7 @@ $$
 \ket{\psi} = c_0 \ket{0\ldots0} + \cdots + c_{2^n-1} \ket{1\ldots1}.
 $$
 
-\strong{Entanglement is what makes the state space blow up exponentially} — the source of quantum power, and of the cost of simulating it.
+\strong{Entanglement is what makes the state space blow up exponentially} - the source of quantum power, and of the cost of simulating it.
 
 \column
 \row
@@ -103,29 +105,16 @@ $$
 
 
 
-## [PLACEHOLDER] Misconception: Superposition $\neq$ Parallelism
-
-<!--
-TODO (you): fill this in. Suggested beat for a CUDA audience:
- - "A quantum computer is NOT 2^n classical machines running in parallel."
- - You hold 2^n amplitudes, but measurement gives you ONE sampled outcome.
- - The art is arranging interference so the useful answer has high amplitude.
- - Analogy of choice: SIMD lanes you can never all read back / a giant
-   reduction where you only get one stochastic sample.
--->
-
-\strong{[Your slide here — kill this placeholder once written.]}
-
-
-
-## Quantum Gates Are Just Unitary Matrices
+## Circuits and Measurement
 
 \columns
-Every gate is a unitary matrix acting on the state vector — a matrix-vector multiply.
+Every gate is a unitary matrix acting on the state:
 
-- Single-qubit gates: $2\times 2$ (e.g. Pauli-$X$, the quantum NOT).
-- Two-qubit gates (e.g. CNOT) create entanglement.
-- A \strong{circuit} is a sequence of these matmuls; reversible, norm-preserving.
+- Single-qubit gates: $2\times 2$ matrices.
+- Two-qubit gates can create entanglement.
+- A circuit prepares a state, evolves it, and then measures it.
+
+\strong{The catch:} one run gives one sampled outcome. Information comes from many shots and from arranging interference so useful outcomes have high probability.
 
 \column
 \row
@@ -133,38 +122,7 @@ Every gate is a unitary matrix acting on the state vector — a matrix-vector mu
 \endrow
 \endcolumn
 
-
-
-## [PLACEHOLDER] What a Quantum Algorithm Actually Looks Like
-
-<!--
-TODO (you): fill this in. Suggested beat:
- - prepare |0...0>  ->  apply a circuit of gates  ->  measure  ->  repeat.
- - You sample, so you run many shots and aggregate statistics.
- - The win comes from interference + structure, not brute force.
- - Optional: a tiny circuit diagram or pseudo-"kernel launch" framing.
--->
-
-\strong{[Your slide here — kill this placeholder once written.]}
-
-
-
-## Measurement: The Catch
-
-\columns
-You never read the amplitudes directly. A measurement is described by a \strong{POVM} $\{M_x\}$ with $M_x \geq 0$, $\sum_x M_x = I$, and
-$$
-p(x) = \tr(\rho M_x).
-$$
-
-- Each run yields one random outcome $x$.
-- Information comes from \strong{many shots} + clever circuit design.
-
-\column
-\row
-\figure[.7]{interferometer.png}{}
-\endrow
-\endcolumn
+\todo{Optional: add a concise analogy for why superposition is not classical parallelism.}
 
 
 
@@ -174,34 +132,169 @@ $$
 Real hardware is noisy, so we use a \strong{density operator} $\rho = \sum_k p_k \ket{\psi_k}\bra{\psi_k}$ instead of a single vector.
 
 - Pure state: $\rho = \ket{\psi}\bra{\psi}$; otherwise mixed.
-- Evolution becomes a \strong{quantum channel} (CPTP map):
+- Evolution becomes a \strong{quantum channel}:
   $$ \rho \mapsto \sum_k K_k \rho K_k^\dagger, \qquad \sum_k K_k^\dagger K_k = I. $$
-- Example — bit flip: $K_0 = \sqrt{\hf{1+\sqrt{\eta}}}\,I,\ K_1 = \sqrt{\hf{1-\sqrt{\eta}}}\,X.$
+- Noise limits the information and computation we can extract.
 
 \column
 \row
-\figure[.9]{mixed.png}{A bit-flip channel on the Bloch sphere}
+\figure[.85]{mixed.png}{A bit-flip channel on the Bloch sphere}
 \endrow
 \endcolumn
 
 
 
-## Example: Grover Search
+## Part I: Quantum Metrology
 
 \columns
-\strong{Grover search} finds a marked item among $N$ unsorted items:
-- Classical: $O(N)$ queries.
-- Grover: $O(\sqrt{N})$ queries.
+\strong{Metrology} is the science of measurement.
 
-\strong{Idea — amplitude amplification:} two reflections rotate the state toward the target,
-$$ \mathcal{G} = (2\ket{\psi}\bra{\psi}-I)(2\ket{u}\bra{u}-I), $$
-nudging it by an angle $\theta$ with $\sin\hf{\theta}=1/\sqrt{N}$ each step.
+\strong{Quantum metrology} asks how quantum resources - superposition, entanglement, squeezing - can improve parameter estimation.
 
-After $\approx O(\sqrt{N})$ steps, measuring returns the target with high probability.
+Typical workflow:
+$$
+\phi \longrightarrow \rho_\phi \longrightarrow \text{measurement outcome } x \longrightarrow \hat{\phi}(x).
+$$
 
 \column
 \row
-\figure[.8]{grover.svg}{Geometric picture of Grover search}
+\figure[.45]{qm_illu.svg}{General process of quantum metrology}
+\figure[.35]{LIGO.jpeg}{LIGO uses squeezed light for precision sensing}
+\endrow
+\endcolumn
+
+
+
+## Two Scaling Laws
+
+\columns
+\strong{Standard quantum limit (SQL)}
+$$
+\Delta \phi \sim O(N^{-1/2})
+$$
+
+\strong{Heisenberg limit (HL)}
+$$
+\Delta \phi \sim O(N^{-1})
+$$
+
+The usual story: better probe states can change the scaling.
+
+\column
+\row
+\figure[.65]{strategy.png}{Probe strategy affects the achievable precision}
+\endrow
+\endcolumn
+
+
+
+## Fisher Information: Local Estimation
+
+\columns
+For a measurement $M=\{M_x\}$ with probabilities $p(x|\phi)=\tr(\rho_\phi M_x)$,
+$$
+F_C(\phi;M)=\sum_x \frac{\partial_\phi p(x|\phi)^2}{p(x|\phi)}.
+$$
+
+Quantum Fisher information maximizes this over measurements:
+$$
+F_Q(\phi)=\max_M F_C(\phi;M).
+$$
+
+\strong{Meaning:} FI tells us how distinguishable nearby parameters are.
+
+\column
+\row
+\figure[.4]{cfi_illu.svg}{Classical FI}
+\figure[.4]{qfi_illu.svg}{Quantum FI}
+\endrow
+\endcolumn
+
+
+
+## Why Local Precision Is Not Enough
+
+\columns
+A state can be locally very sensitive and still globally ambiguous.
+
+Example: a NOON state
+$$
+\ket{\psi_\phi}=\frac{1}{\sqrt{2}}\pp{\ket{N,0}+e^{iN\phi}\ket{0,N}}
+$$
+has Fisher information $F(\phi)=N^2$, but
+$$
+\phi \quad\text{and}\quad \phi+\frac{2\pi}{N}
+$$
+are indistinguishable.
+
+\column
+\row
+\figure[.5]{MachZehnder.png}{}
+\figure[.45]{prob_2.png}{Local sensitivity can hide global ambiguity}
+\endrow
+\endcolumn
+
+
+
+## Mutual Information: Global Estimation
+
+\columns
+Mutual information measures how many bits about $\Phi$ are learned from the outcome $X$:
+$$
+I(X,\Phi)=\sum_x\int p(\phi)p(x|\phi)\log\frac{p(x|\phi)}{p(x)}\,d\phi.
+$$
+
+- MI is a \strong{global} distinguishability measure.
+- It depends on the full prior and all possible outcomes.
+- It is invariant under reparameterizing $\phi$.
+
+\column
+\row
+\figure[.75]{alice_bob.svg}{Alice encodes $\phi$; Bob measures and learns about it}
+\endrow
+\endcolumn
+
+
+
+## My Work: Bits Returned by Quantum Estimation
+
+\columns
+\strong{Question:} how many bits can any measurement extract from a quantum parameter?
+
+\strong{Results}
+- A spectrum-based upper bound on mutual information.
+- A Fisher-information upper bound:
+  $$I(X,\Phi)\leq \log\pp{1+\frac{1}{2}\int_a^b \sqrt{F(\phi)}\,d\phi}.$$
+- In noisy quantum phase estimation, the extractable information is capped at SQL scaling.
+
+\strong{Takeaway:} local sensitivity alone does not guarantee globally usable information.
+
+\column
+\row
+\figure[.45]{chi_qpe.png}{MI bound for noisy QPE}
+\figure[.45]{fisher_bound_noise.png}{Noise restores SQL behavior}
+\endrow
+\endcolumn
+
+\todo{Add one short spoken takeaway connecting "bits returned" to information throughput.}
+
+
+
+## Part II: Quantum Signal Processing
+
+\columns
+Many quantum algorithms reduce to one problem:
+
+\strong{Given access to an operator, implement a useful function of it.}
+
+Classical analogy:
+- eigensolvers apply spectral filters;
+- iterative solvers count matrix-vector products;
+- approximation theory turns functions into polynomials.
+
+\column
+\row
+\figure[.8]{poly_exp.svg}{Approximating $f(x)=e^{itx}$ by a polynomial}
 \endrow
 \endcolumn
 
@@ -210,12 +303,16 @@ After $\approx O(\sqrt{N})$ steps, measuring returns the target with high probab
 ## Block Encoding: Putting a Matrix in a Circuit
 
 To compute with a matrix $A$ on a quantum computer, we hide it in the corner of a larger unitary $U_A$:
-$$U_A = \pmat{ A & * \\ * & * }.$$
+$$
+U_A = \pmat{ A & * \\ * & * }.
+$$
 
-For a Hermitian $H$ with eigenvalues in $[-1,1]$, a standard choice is
-$$U_H = \pmat{ H & i\sqrt{I-H^2} \\ i\sqrt{I-H^2} & H }.$$
+For a Hermitian $H$ with eigenvalues in $[-1,1]$, one standard form is
+$$
+U_H = \pmat{ H & i\sqrt{I-H^2} \\ i\sqrt{I-H^2} & H }.
+$$
 
-\strong{Think of it as the quantum API for "give me access to this operator."}
+\strong{Think of block encoding as the quantum API for "give me access to this operator."}
 
 
 
@@ -227,12 +324,12 @@ $$
 \pmat{A & * \\ * & *} \;\mapsto\; \pmat{P(A) & * \\ * & *}.
 $$
 
-- Same idea as classical \strong{Chebyshev / polynomial filters} on a spectrum.
-- Cost is counted in \strong{calls to the operator} — the quantum analogue of matvec count in an iterative solver.
+- The polynomial degree is the number of calls to the encoded operator.
+- This is the quantum analogue of counting matvecs in an iterative method.
 
 \column
 \row
-\figure[.9]{poly_exp.svg}{Approximating $f(x)=e^{itx}$ by a polynomial}
+\figure[.75]{qsvt.png}{QSVT alternates calls to the block encoding}
 \endrow
 \endcolumn
 
@@ -245,170 +342,159 @@ $$
 \row
 \figure[.9]{poly_exp.svg}{}
 \endrow
-- $f(x) = e^{itx}$ — time evolution $e^{iHt}$.
+- $f(x)=e^{itx}$ gives time evolution.
 
 \column
 ### Linear Systems
 \row
 \figure[.9]{poly_inverse.svg}{}
 \endrow
-- $f(x) = x^{-1}$ — solve $Ax=b$.
+- $f(x)=x^{-1}$ solves $Ax=b$.
 
 \column
 ### Fixed-Point Search
 \row
 \figure[.9]{poly_sgn.svg}{}
 \endrow
-- $f(x) = \mathrm{sgn}(x)$ — Grover without overshoot.
+- $f(x)=\mathrm{sgn}(x)$ gives robust search.
 \endcolumn
 
 \strong{Pick the polynomial, get the algorithm.}
 
 
 
-## My Research: Three Threads
+## QSP: A Polynomial from a Circuit
 
 \columns
-\strong{Thread 1 — Limits of estimation}
-- \em{How much} can a measurement actually tell you about a parameter encoded in a quantum state?
-- An information-theoretic answer, and where noise caps you.
+Quantum signal processing (QSP) builds a polynomial transformation by alternating:
 
-\column
-\strong{Thread 2 — Extending the QSVT toolbox}
-- Make the polynomial-filter machinery do \strong{more per circuit}: many outputs at once, and \strong{matrix-valued} and \strong{multivariate} filters.
+- a fixed signal unitary containing the input $x$;
+- tunable phase rotations;
+- one auxiliary qubit.
 
-\column
-\strong{Thread 3 — Simulating analog hardware on digital qubits}
-- Continuous-variable (bosonic) processors are infinite-dimensional. Simulate them on a qubit/GPU register with \strong{polylogarithmic} overhead.
-\endcolumn
-
-\row
-\figure[.7]{relations.svg}{}
-\endrow
-
-
-
-## Thread 1: How Many Bits Can You Learn?
-
-\columns
-Estimating a parameter $\phi$ from a quantum state has two regimes:
-- \strong{Local} — Fisher information: how finely you resolve $\phi$ \em{near} a known value.
-- \strong{Global} — mutual information (MI): how many \strong{bits} about $\phi$ you actually extract, no prior assumed.
-
-\strong{My results:} upper bounds on MI from the state's spectrum and its Fisher information — and a proof that under realistic noise, you can't beat the standard limit.
+In standard QSP/QSVT, a circuit essentially produces one scalar polynomial output.
 
 \column
 \row
-\figure[.5]{prob_1.png}{}
-\figure[.45]{prob_2.png}{}
-\endrow
-\strong{Global} (left) vs \strong{local} (right): the same local sensitivity can hide global ambiguity.
-\endcolumn
-
-
-
-## Thread 2a: $U(N)$-QSP — More Output Per Circuit
-
-\columns
-Standard QSP/QSVT applies one polynomial and yields essentially \strong{one bit} per measurement.
-
-\strong{$U(N)$-QSP/QSVT} uses an $N$-dimensional auxiliary register to apply a whole \strong{matrix of polynomials} at once — extracting $\log N$ bits in a single shot.
-
-- Decide which of $N$ intervals holds a parameter in one measurement, instead of $O(\log N)$ rounds.
-- Application: quantum amplitude estimation with error $\sim 1/d$ in the circuit depth $d$.
-
-\column
-\row
-\figure[.85]{qsp_u.png}{$U(N)$-QSP: a multi-qubit auxiliary register drives multiple polynomial outputs.}
+\figure[.75]{qsp.svg}{A QSP circuit}
 \endrow
 \endcolumn
 
 
 
-## Thread 2b: Bivariate QSP — Low-Rank Filters
+## My Work: $U(N)$-QSP
 
 \columns
-\strong{Goal:} implement a two-variable polynomial filter $f(w,v) = \sum_{j,k} f_{jk}\, w^j v^k$ as a circuit.
+\strong{Idea:} replace the one-qubit auxiliary system by an $N$-dimensional auxiliary register.
 
-\strong{Method:} factor it, $f(w,v) \approx \sum_{j=1}^r p_j(w)\, q_j(v)$, and build the pieces separately — exactly a \strong{low-rank decomposition}, the same move as SVD / PCA compression.
+\strong{Result:} implement a \strong{matrix of polynomials}
+$$
+\bmp(U)=\{P_{jk}(U)\}
+$$
+with singular-value constraints replacing scalar boundedness constraints.
 
-- Smooth filters have fast-decaying coefficients $\Rightarrow$ a tiny rank $r \ll d$ suffices.
-- E.g. with decay exponent $s=4$, keeping $5\%$ of components reaches error $<0.1$.
+\strong{Why useful:} one measurement can extract $\log N$ bits, e.g. deciding which of $N$ intervals contains a parameter.
 
 \column
 \row
-\figure[.85]{decay_comparison.png}{Coefficient decay enables large rank reduction for smooth functions.}
+\figure[.45]{qsp_u.png}{$U(N)$-QSP circuit}
+\figure[.45]{quatro_decision.png}{Multi-interval decision polynomials}
+\endrow
+\row
+\figure[.55]{quatro_comparison.png}{$U(N)$-QSP vs staged scalar QSP}
 \endrow
 \endcolumn
 
+\todo{Explain "more output per circuit" using one analogy, then immediately return to the theorem or application.}
 
 
-## Thread 3: Two Kinds of Quantum Hardware
+
+## Part III: Quantum Simulation
 
 \columns
 ### Discrete Variable (DV)
-\figure[.45]{qubit_intro.png}{}
-- State: $\sum_{j=0}^{N-1} c_j \ket{j}$ — a finite vector.
-- Gates: Pauli, CNOT, $T$, $\ldots$
-- Easy to calibrate; the mainstream of quantum computing.
+\figure[.42]{qubit_intro.png}{}
+- Finite-dimensional qubit registers.
+- Mainstream model for quantum algorithms.
 
 \column
 ### Continuous Variable (CV)
-\figure[.6]{osc_intro.png}{}
-- State: $\sum_{j=0}^{\infty} c_j \ket{j}_F$ — \strong{infinite-dimensional} (a bosonic mode / oscillator).
-- Gates: displacement, squeezing, rotation, beam splitter, $\ldots$
-- Hardware-efficient; long history in quantum optics.
+\figure[.55]{osc_intro.png}{}
+- Infinite-dimensional bosonic modes.
+- Natural in quantum optics and oscillators.
 
 \column
 ### Hybrid CV-DV
-\figure[.75]{hybrid_intro.png}{}
-- State: $\sum_j c_j \ket{j}\ket{\phi_j}_{CV}$.
-- Adds qubit-conditional bosonic gates.
-- A promising frontier — but how do we \strong{simulate} it?
+\figure[.68]{hybrid_intro.png}{}
+- Qubits coupled to bosonic modes.
+- Promising, but hard to simulate.
 \endcolumn
 
 
 
-## The Problem: Bosonic Modes Are Infinite-Dimensional
+## Why Simulation Becomes Expensive
 
 \columns
-To run a CV system on qubit hardware (or simulate it on a GPU), you must turn an \strong{infinite-dimensional} state into a finite array.
+A quantum state of $n$ qubits is a complex vector of length $2^n$:
+$$
+\ket{\psi} = \pp{c_0,\, c_1,\, \ldots,\, c_{2^n-1}}^\top, \qquad \sum_k \abs{c_k}^2 = 1.
+$$
 
-The textbook approach — \strong{Fock-basis encoding} — truncates at $N$ levels and maps $\ket{k}_F \mapsto \ket{k}$. But the basic operators become dense and ugly. The ladder operator is
-$$
-\a = \pmat{ 0 & \sqrt{1} & & \\ & 0 & \sqrt{2} & \\ & & 0 & \ddots \\ & & & \ddots },
-$$
-so even a \strong{displacement} $\D{\alpha}=e^{\alpha\a^\dagger - \alpha^*\a}$ has matrix elements
-$$
-\bra{m}\D{\alpha}\ket{n} = \sqrt{\tfrac{n!}{m!}}\,\alpha^{m-n} e^{-\abs{\alpha}^2/2} L_n^{(m-n)}(\abs{\alpha}^2),
-$$
-a generalized Laguerre polynomial.
+- Simulating $n$ qubits means storing and updating a $2^n$ array.
+- $n=40$ qubits is already about a trillion complex amplitudes.
+- For CV systems, the Hilbert space is infinite before discretization.
 
-\strong{The catch:} simulating the elementary CV gates this way costs resources \strong{exponential} in the qubits-per-mode — the encoding fights you.
+\strong{The central question is representation: what finite object should stand in for an infinite-dimensional state?}
 
 \column
 \row
-\figure[.85]{comp_power.svg}{$A\to B$: can hardware $A$ efficiently simulate processor $B$?}
+\figure[.75]{comp_power.svg}{$A\to B$: can hardware $A$ efficiently simulate processor $B$?}
 \endrow
 \endcolumn
 
 
 
-## The Idea: Encode the Wave Function, Not the Fock Levels
+## Fock Encoding: The Direct Route Is Dense
 
 \columns
-A CV state has a \strong{position wave function} $\psi(q)$. Instead of truncating Fock levels, \strong{sample $\psi$ on a grid} and store the samples as qubit amplitudes:
+The textbook approach truncates Fock levels:
 $$
-\enc_Q(\ket{\psi}) = \sqrt{\lambda}\sum_{j=0}^{N-1} \psi(\lambda\tilde{j})\,\ket{j}, \qquad N = 2^n.
+\sum_{j=0}^{\infty}c_j\ket{j}_F
+\quad\mapsto\quad
+\sum_{j=0}^{N-1}c_j\ket{j}.
 $$
 
-- $n$ qubits $\Rightarrow$ a $2^n$-point grid — exponentially fine resolution in the qubit count.
-- Same move as discretizing a PDE field onto a grid, then storing the grid in a state vector.
-- Position and momentum pictures are linked by the \strong{quantum Fourier transform} — the discrete FFT, in $O(n^2)$ gates.
+But elementary CV operators become dense. The ladder operator is
+$$
+\hat a=\pmat{0&\sqrt{1}&&\\&0&\sqrt{2}&\\&&0&\ddots\\&&&\ddots},
+$$
+and displacement involves generalized Laguerre polynomials.
+
+\strong{The encoding fights the gates.}
 
 \column
 \row
-\figure[.8]{encodings.png}{Fock-basis vs. position (wave-function) encoding.}
+\figure[.8]{encodings.png}{Fock-basis vs position encoding}
+\endrow
+\endcolumn
+
+
+
+## Position Encoding: Store the Wave Function
+
+\columns
+A CV state has a position wave function $\psi(q)$. Instead of storing Fock coefficients, sample the wave function on a grid:
+$$
+\enc_Q(\ket{\psi})=\sqrt{\lambda}\sum_{j=0}^{N-1}\psi(\lambda\tilde{j})\ket{j},\qquad N=2^n.
+$$
+
+- $n$ qubits give a $2^n$-point grid.
+- Position and momentum pictures are connected by the quantum Fourier transform.
+- This is closer to discretizing a field than truncating a ladder operator.
+
+\column
+\row
+\figure[.75]{encodings.png}{Wave-function encoding}
 \endrow
 \endcolumn
 
@@ -417,56 +503,62 @@ $$
 ## Why It Works: Diagonalize in the Right Basis
 
 \columns
-The payoff: \strong{position operators are diagonal} in the position grid, \strong{momentum operators are diagonal} in the momentum grid.
+Position operators are diagonal in the position grid; momentum operators are diagonal in the momentum grid.
 
-- Any $e^{i f(\hat q)}$ is just a layer of phase rotations ($R_z$) on the position register — \strong{exact}, no truncation error.
-- Any $e^{i g(\hat p)}$ is the same, after one QFT to hop into the momentum basis.
-- A Gaussian gate = a short product of position-only and momentum-only pieces, sandwiched by QFTs.
+- Any $e^{i f(\hat q)}$ is a diagonal phase layer.
+- Any $e^{i g(\hat p)}$ is the same after a QFT.
+- Gaussian gates decompose into position-only and momentum-only pieces.
 
-\strong{The only error comes from the QFTs} (finite-grid aliasing), and it is fully characterized.
+Example:
+$$
+\RR{\theta}
+=e^{-\frac{i}{2}\tan\frac\theta2\,\hat q^2}
+ e^{-\frac{i}{2}\sin\theta\,\hat p^2}
+ e^{-\frac{i}{2}\tan\frac\theta2\,\hat q^2}.
+$$
 
 \column
-\strong{"Rotating by not rotating":} an oscillator rotation $\RR{\theta}$ is three shear layers,
-$$
-\RR{\theta} = e^{-\frac{i}{2}\tan\frac\theta2\,\hat q^2}\, e^{-\frac{i}{2}\sin\theta\,\hat p^2}\, e^{-\frac{i}{2}\tan\frac\theta2\,\hat q^2},
-$$
-each a diagonal phase layer in its own basis.
-\endcolumn
-
-
-
-## The Result: Exponential Savings
-
-\columns
-Every Gaussian and conditional-Gaussian gate — displacement, rotation, squeezing, beam splitter, and their qubit-controlled versions — simulates in
-$$
-O\!\big(\log^2(\Gamma + \log\tfrac1\epsilon)\big)
-$$
-elementary qubit gates per gate ($\Gamma$ = Fock-level bound, $\epsilon$ = target error).
-
-- \strong{Polylogarithmic} per gate, vs. \strong{exponential} for Fock-basis encoding.
-- Each gate is a few QFTs plus $O(n^2)$ phase rotations — FFT-and-diagonal-scale, the GPU's bread and butter.
-- Rigorous QFT-error bounds turn this into a concrete resource budget: e.g. error $\lesssim 10^{-6}$ up to Fock level $10$ needs just $n=6$ qubits per mode.
-
-\column
-\strong{Measurements too:}
-- Homodyne — read out the position register directly.
-- Heterodyne — a beam splitter plus homodyne.
-- Photon counting — iterative phase estimation on a conditional rotation.
-
 \row
-\figure[.7]{heterodyne.png}{Heterodyne = beam splitter + homodyne.}
+\figure[.75]{heterodyne.png}{Measurements also reduce to gate decompositions}
 \endrow
 \endcolumn
 
 
 
+## My Work: Efficient Qubit Simulation of Hybrid CV-DV Gates
+
+\columns
+\strong{Result:} Gaussian and conditional-Gaussian gates can be simulated on qubit registers with
+$$
+O\!\left(\log^2\!\left(\Gamma+\log\frac{1}{\epsilon}\right)\right)
+$$
+elementary gates per hybrid gate.
+
+\strong{Mechanism:}
+- encode wave functions on a qubit grid;
+- switch bases with QFTs;
+- implement diagonal phase layers;
+- track QFT/discretization errors rigorously.
+
+\strong{Takeaway:} the right encoding turns dense CV operators into structured qubit circuits.
+
+\column
+\row
+\figure[.75]{hybrid_intro.png}{Hybrid oscillator-qubit systems}
+\endrow
+\endcolumn
+
+\todo{Add one concrete example gate, such as displacement or rotation, if the audience needs a more physical anchor.}
+
+
+
 ## Summary
 
-- A quantum state is a $2^n$ complex vector; gates are unitary matmuls; measurement samples it.
-- Entanglement is the source of both the power and the exponential simulation cost — a natural fit for GPUs.
-- \strong{QSVT} unifies many quantum algorithms as polynomial functions of an operator's spectrum, costed in operator calls.
-- My work pushes on the limits of estimation and on extending the QSP/QSVT toolbox.
+- \strong{Metrology}: Fisher information is local; mutual information captures globally extractable bits.
+- \strong{Signal processing}: QSVT turns matrix functions into polynomial transformations of block encodings.
+- \strong{Simulation}: position encoding plus QFTs can make hybrid CV-DV gates efficient on qubit registers.
+
+\strong{Common theme:} the representation determines what information, computation, or simulation is actually accessible.
 
 
 
@@ -477,7 +569,7 @@ elementary qubit gates per gate ($\Gamma$ = Fock-level bound, $\epsilon$ = targe
 \hcenter{Thank you!}
 
 \row
-\qrcode{https://helloluxi.github.io/phd-defense}{Slides}
+\qrcode{https://helloluxi.github.io/intro-qcqi}{Slides}
 &nbsp;
 \qrcode{https://xlu.casa/s/}{Homepage}
 \endrow
