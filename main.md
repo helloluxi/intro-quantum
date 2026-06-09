@@ -134,114 +134,57 @@ $$ p(x) = \tr(\rho M_x). $$
 
 \bcenter{Part I: Quantum Metrology}
 
-## Quantum Metrology
+
+
+## Quanutm Metrology
+
+- Metrology: science of measurement.
+- Quantum Metrology: Enhanced parameter estimation using quantum resources (entanglement, squeezed light, etc).
+
+\row
+\figure[.5]{qm_illu.svg}{General process of quantum metrology.}
+\figure[.3]{LIGO.jpeg}{LIGO uses squeezed light to sense changes at the scale of $10^{-19}$ m.}
+\endrow
+
+
+
+## Heisenberg Limit vs Standard Quantum Limit
+
+- Standard quantum limit \strong{(SQL)}: $\Delta \phi \sim \mathcal{O}(N^{-\frac{1}{2}})$.
+- Heisenberg limit \strong{(HL)}: $\Delta \phi \sim \mathcal{O}(N^{-1})$.
+
+\row
+\figure[.5]{strategy.png}{Limits are largely determined by the probe states. \cite{Giovannetti, Lloyd, and Maccone. "Quantum metrology." Physical review letters 96, no. 1 (2006): 010401.}}
+\endrow
+
+
+
+
+## Fisher Information vs Mutual Information
 
 \columns
-\strong{Metrology} is the science of measurement.
+\row
+\figure[.52]{qfi_illu.svg}{Quantum Fisher information}
+\endrow
 
-\strong{Quantum metrology} asks how quantum resources - superposition, entanglement, squeezing - can improve parameter estimation.
+QFI measures \strong{local sensitivity}: how well nearby values of $\phi$ can be separated.
 
-Typical workflow:
 $$
-\phi \longrightarrow \rho_\phi \longrightarrow \text{measurement outcome } x \longrightarrow \hat{\phi}(x).
+F_Q(\phi)=\max_M \sum_x \frac{\pp{\partial_\phi p(x|\phi)}^2}{p(x|\phi)}.
 $$
 
 \column
 \row
-\figure[.45]{qm_illu.svg}{General process of quantum metrology}
-\figure[.35]{LIGO.jpeg}{LIGO uses squeezed light for precision sensing}
+\figure[.72]{alice_bob.svg}{Mutual information}
 \endrow
-\endcolumn
 
+MI measures \strong{global distinguishability}: how many bits about $\Phi$ are learned from $X$.
+It uses the full prior and all outcomes.
 
-
-## Scaling Laws
-
-\columns
-\strong{Standard quantum limit (SQL)}
-$$
-\Delta \phi \sim O(N^{-1/2})
-$$
-
-\strong{Heisenberg limit (HL)}
-$$
-\Delta \phi \sim O(N^{-1})
-$$
-
-The usual story: better probe states can change the scaling.
-
-\column
-\row
-\figure[.65]{strategy.png}{Probe strategy affects the achievable precision}
-\endrow
-\endcolumn
-
-
-
-## Fisher Information
-
-\columns
-For a measurement $M=\{M_x\}$ with probabilities $p(x|\phi)=\tr(\rho_\phi M_x)$,
-$$
-F_C(\phi;M)=\sum_x \frac{\partial_\phi p(x|\phi)^2}{p(x|\phi)}.
-$$
-
-Quantum Fisher information maximizes this over measurements:
-$$
-F_Q(\phi)=\max_M F_C(\phi;M).
-$$
-
-\strong{Meaning:} FI tells us how distinguishable nearby parameters are.
-
-\column
-\row
-\figure[.4]{cfi_illu.svg}{Classical FI}
-\figure[.4]{qfi_illu.svg}{Quantum FI}
-\endrow
-\endcolumn
-
-
-
-## Why Local Precision Is Not Enough
-
-\columns
-A state can be locally very sensitive and still globally ambiguous.
-
-Example: a NOON state
-$$
-\ket{\psi_\phi}=\frac{1}{\sqrt{2}}\pp{\ket{N,0}+e^{iN\phi}\ket{0,N}}
-$$
-has Fisher information $F(\phi)=N^2$, but
-$$
-\phi \quad\text{and}\quad \phi+\frac{2\pi}{N}
-$$
-are indistinguishable.
-
-\column
-\row
-\figure[.5]{MachZehnder.png}{}
-\figure[.45]{prob_2.png}{Local sensitivity can hide global ambiguity}
-\endrow
-\endcolumn
-
-
-
-## Mutual Information
-
-\columns
-Mutual information measures how many bits about $\Phi$ are learned from the outcome $X$:
 $$
 I(X,\Phi)=\sum_x\int p(\phi)p(x|\phi)\log\frac{p(x|\phi)}{p(x)}\,d\phi.
 $$
 
-- MI is a \strong{global} distinguishability measure.
-- It depends on the full prior and all possible outcomes.
-- It is invariant under reparameterizing $\phi$.
-
-\column
-\row
-\figure[.75]{alice_bob.svg}{Alice encodes $\phi$; Bob measures and learns about it}
-\endrow
 \endcolumn
 
 
@@ -261,8 +204,7 @@ $$
 
 \column
 \row
-\figure[.45]{chi_qpe.png}{MI bound for noisy QPE}
-\figure[.45]{fisher_bound_noise.png}{Noise restores SQL behavior}
+\figure{fisher_bound_noise.png}{Noise restores SQL behavior}
 \endrow
 \endcolumn
 
