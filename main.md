@@ -1,11 +1,9 @@
-# Quantum Metrology, Signal Processing, and Simulation
+# A Glimpse of Quantum Computing: Metrology, Signal Processing, and Simulation
 
 \subtitle{Luca Lu}
 \subsubtitle{DevTech Engineer, NVIDIA}
 \today{en-US}
 \graphicspath{fig}
-
-\todo{Opening hook: add a 20-30 second bridge for a technical computing audience. Suggested direction: computation is limited by representation, memory, and structured linear algebra; quantum computing changes all three at once.}
 
 
 
@@ -23,42 +21,6 @@
   - Qubit simulation of hybrid oscillator-qubit systems.
 \column
 \figure{me.jpeg}{}
-\endcolumn
-
-
-
-## Roadmap
-
-This talk is not a full survey. The goal is to build enough background to understand three research stories.
-
-- \strong{Quantum metrology}: how much information can a measurement reveal?
-- \strong{Quantum signal processing}: how do quantum algorithms transform matrices?
-- \strong{Quantum simulation}: how do we represent analog quantum hardware on qubits?
-
-\strong{Pattern for each part:} background first, then one slide for my work.
-
-\todo{Add one sentence tying metrology, signal processing, and simulation together in your own voice.}
-
-
-
-## Minimal Quantum Vocabulary
-
-\columns
-\strong{State}
-- The mathematical object describing what the system can do next.
-- For $n$ qubits, a pure state is a normalized vector in $\mathbb{C}^{2^n}$.
-
-\strong{Operation}
-- A gate is a reversible linear transformation.
-- A circuit is a sequence of gates.
-
-\column
-\strong{Measurement}
-- A measurement produces one classical outcome sampled from a probability distribution.
-- The amplitudes are not directly readable.
-
-\strong{Noise}
-- Real devices are open systems, so states become density operators and gates become channels.
 \endcolumn
 
 
