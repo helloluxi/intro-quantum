@@ -238,20 +238,24 @@ How do we implement these efficiently on a quantum computer?
 
 
 
-## Block Encoding + QSP
+## Solution: Block Encoding and Quantum Signal Processing
 
 \columns
 \strong{Block Encoding}: embed $A$ in a larger unitary:
 $$U_A = \pmat{A & * \\ * & *}.$$
 
-\strong{QSP}: alternate $U_A$ with phase rotations, degree $=$ calls to $U_A$:
-$$U_A^{\times d} \;\Rightarrow\; \pmat{P(A) & * \\ * & *}.$$
-
-\strong{Guarantee:} any polynomial with $|P(x)| \leq 1$ on $[-1,1]$ is implementable with $d$ calls.
+This representation enables matrix arithmetic:
+- \strong{Multiplication}: one can realize a block encoding of $AB$ using one call to $U_A$ and $U_B$ each.
+- \strong{Addition}: one can realize a block encoding of $A = \sum_j \alpha_j A_j$, where $\sum_j \abs{\alpha_j} \le 1$, using one call to $U_{A_j}$ each.
 
 \column
+\strong{Quantum Signal Processing (QSP)}: alternating $d$ calls to $U_A$ with phase rotations implements a polynomial transformation:
+$$\pmat{A & * \\ * & *} \;\mapsto\; \pmat{P(A) & * \\ * & *}.$$
+
+\strong{Theory:} $P$ is implementable iff $|P(x)| \leq 1$ on $[-1,1]$, has degree $\le d$ and has parity $d \bmod 2$.
+
 \row
-\figure[.75]{qsp.svg}{A QSP circuit}
+\figure[.75]{qsp.svg}{QSP circuit}
 \endrow
 \endcolumn
 
@@ -283,6 +287,7 @@ $$U_A^{\times d} \;\Rightarrow\; \pmat{P(A) & * \\ * & *}.$$
 - $f(x)=\mathrm{sgn}(x)$ gives robust search.
 - Query Complexity: $O(\delta^{-1}\log(1/\epsilon))$
 \endcolumn
+
 
 
 ## My Work: U(N)-QSP
