@@ -1,0 +1,5 @@
+Title:
+A Glimpse of Quantum Computing: Metrology, Signal Processing, and Simulation
+
+Abstract:
+Quantum computing promises a fundamentally different way to process information, with the potential to dramatically accelerate certain tasks, from factoring the large numbers behind RSA encryption to simulating molecules in chemistry and materials science. This talk starts with the basics — how information is stored, processed, and ultimately read back out to the classical world in a quantum system — then offers a taste of my own research. In metrology, I ask how accurately we can learn information encoded in noisy quantum systems. In signal processing, I show how a matrix can be encoded and transformed as quantum information. In simulation, I compare the computational power of classical, qubit, and hybrid oscillator–qubit systems — and how efficiently one can simulate another. I close with my perspective on the role GPUs play in pushing the frontier of quantum computing.

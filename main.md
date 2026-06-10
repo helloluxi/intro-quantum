@@ -126,7 +126,21 @@ $$ p(x) = \tr(\rho M_x). $$
 
 
 
-## TODO: CUDA Simulation? Mention RSA?
+## The Wider Landscape
+
+\todo{Placeholder: a one-page map of active quantum directions, beyond what this talk covers.}
+
+\columns
+- \strong{Quantum error correction (QEC)}: making noisy qubits reliable.
+- \strong{Variational algorithms (VQE / QAOA)}: near-term hybrid quantum-classical optimization.
+- \strong{Quantum machine learning (QNN)}: parameterized circuits as learnable models.
+
+\column
+- \strong{Cryptography}: Shor's algorithm and post-quantum security.
+- \strong{Simulation tooling}: CUDA-Q / cuQuantum and GPU-accelerated backends.
+\endcolumn
+
+\todo{Pick 2-3 to name aloud; use this to bridge into my own work.}
 
 
 
