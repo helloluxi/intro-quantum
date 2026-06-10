@@ -189,11 +189,10 @@ $$
 
 \column
 \row
-\figure[.72]{alice_bob.svg}{Mutual information}
+\figure[.88]{alice_bob.svg}{Mutual information}
 \endrow
 
-MI measures \strong{global distinguishability}: how many bits about $\Phi$ are learned from $X$.
-It uses the full prior and all outcomes.
+MI measures \strong{global distinguishability}: how many bits of information is extracted.
 
 $$
 I(X,\Phi)=\sum_x\int p(\phi)p(x|\phi)\log\frac{p(x|\phi)}{p(x)}\,d\phi.
@@ -206,25 +205,24 @@ $$
 ## My Work: Mutual Information Bound by Fisher Information
 
 \columns
-\strong{Question:} how many bits can any measurement extract from a quantum parameter?
-
 \strong{Results}
-- A spectrum-based upper bound on mutual information.
 - A Fisher-information upper bound:
   $$I(X,\Phi)\leq \log\pp{1+\frac{1}{2}\int_a^b \sqrt{F(\phi)}\,d\phi}.$$
 - In noisy quantum phase estimation, the extractable information is capped at SQL scaling.
-
-\strong{Takeaway:} local sensitivity alone does not guarantee globally usable information.
+  $$ I(X,\Phi) \leq \log\left(1 + \pi\sqrt{\frac{N\eta}{1-\eta}} \right).$$
+  
 
 \column
 \row
-\figure{fisher_bound_noise.png}{Noise restores SQL behavior}
+\figure{fisher_bound_noise.png}{Noise restores \strong{Standard Quantum Limit} behavior}
 \endrow
 \endcolumn
 
-\todo{Add one short spoken takeaway connecting "bits returned" to information throughput.}
 
 
+## 
+
+\bcenter{Part II: Quantum Signal Processing}
 
 ## Quantum Signal Processing
 
