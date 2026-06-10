@@ -25,18 +25,19 @@
 
 
 
-## Schrödinger's Cat
+## Schrödinger's Cat & Equation
 
-\todo{Figure: Schrödinger's cat}
-
+\row
+\figure[0.8]{cat.jpg}{}
+\endrow
 
 
 ## Qubits
 
 \row
-\figure[.3]{cbit.svg}{Classical bit}
+\figure[.36]{cbit.svg}{Classical bit}
 &nbsp;
-\figure[.3]{qbit.svg}{Quantum bit (qubit)}
+\figure[.36]{qbit.svg}{Quantum bit (qubit)}
 \endrow
 
 
@@ -224,27 +225,28 @@ $$
 
 \bcenter{Part II: Quantum Signal Processing}
 
-## Block Encoding
+## The Problem
 
-Many quantum algorithms need to implement a function of a matrix. How do we give a circuit access to one?
+Many computational tasks reduce to computing a function of a matrix:
 
-Embed $A$ in the corner of a larger unitary:
-$$
-U_A = \pmat{ A & * \\ * & * }.
-$$
+- \strong{Hamiltonian simulation}: time-evolve a quantum system under $H$.
+- \strong{Linear systems}: solve $Ax = b$.
+- \strong{Search}: find a marked item in an unsorted database.
+
+How do we implement these efficiently on a quantum computer?
 
 
 
-## Quantum Signal Processing
+## Block Encoding + QSP
 
 \columns
-Given access to $U_A$, how do we implement a function of $A$?
+\strong{Block Encoding}: embed $A$ in a larger unitary:
+$$U_A = \pmat{A & * \\ * & *}.$$
 
-Alternating $U_A$ with tunable phase rotations produces a polynomial transformation of the singular values:
-$$
-\pmat{A & * \\ * & *} \;\mapsto\; \pmat{P(A) & * \\ * & *}.
-$$
-- Polynomial degree = number of calls to $U_A$.
+\strong{QSP}: alternate $U_A$ with phase rotations, degree $=$ calls to $U_A$:
+$$U_A^{\times d} \;\Rightarrow\; \pmat{P(A) & * \\ * & *}.$$
+
+\strong{Guarantee:} any polynomial with $|P(x)| \leq 1$ on $[-1,1]$ is implementable with $d$ calls.
 
 \column
 \row
@@ -262,6 +264,7 @@ $$
 \figure[.9]{poly_exp.svg}{}
 \endrow
 - $f(x)=e^{itx}$ gives time evolution.
+- Query Complexity: $O(t + \log(1/\epsilon))$
 
 \column
 ### Linear Systems
@@ -269,6 +272,7 @@ $$
 \figure[.9]{poly_inverse.svg}{}
 \endrow
 - $f(x)=x^{-1}$ solves $Ax=b$.
+- Query Complexity: $O(\kappa\log(1/\epsilon))$
 
 \column
 ### Fixed-Point Search
@@ -276,8 +280,8 @@ $$
 \figure[.9]{poly_sgn.svg}{}
 \endrow
 - $f(x)=\mathrm{sgn}(x)$ gives robust search.
+- Query Complexity: $O(\delta^{-1}\log(1/\epsilon))$
 \endcolumn
-
 
 
 ## My Work: U(N)-QSP
