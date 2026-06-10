@@ -202,11 +202,11 @@ $$
 
 
 
-## My Work: Mutual Information Bound by Fisher Information
+## How many bits does your quantum estimation return? 
 
 \columns
 \strong{Results}
-- A Fisher-information upper bound:
+- Mutual Information Bound by Fisher Information:
   $$I(X,\Phi)\leq \log\pp{1+\frac{1}{2}\int_a^b \sqrt{F(\phi)}\,d\phi}.$$
 - In noisy quantum phase estimation, the extractable information is capped at SQL scaling.
   $$ I(X,\Phi) \leq \log\left(1 + \pi\sqrt{\frac{N\eta}{1-\eta}} \right).$$
@@ -224,62 +224,37 @@ $$
 
 \bcenter{Part II: Quantum Signal Processing}
 
-## Quantum Signal Processing
-
-\columns
-Many quantum algorithms reduce to one problem:
-
-\strong{Given access to an operator, implement a useful function of it.}
-
-Classical analogy:
-- eigensolvers apply spectral filters;
-- iterative solvers count matrix-vector products;
-- approximation theory turns functions into polynomials.
-
-\column
-\row
-\figure[.8]{poly_exp.svg}{Approximating $f(x)=e^{itx}$ by a polynomial}
-\endrow
-\endcolumn
-
-
-
 ## Block Encoding
 
-To compute with a matrix $A$ on a quantum computer, we hide it in the corner of a larger unitary $U_A$:
+Many quantum algorithms need to implement a function of a matrix. How do we give a circuit access to one?
+
+Embed $A$ in the corner of a larger unitary:
 $$
 U_A = \pmat{ A & * \\ * & * }.
 $$
 
-For a Hermitian $H$ with eigenvalues in $[-1,1]$, one standard form is
-$$
-U_H = \pmat{ H & i\sqrt{I-H^2} \\ i\sqrt{I-H^2} & H }.
-$$
-
-\strong{Think of block encoding as the quantum API for "give me access to this operator."}
 
 
-
-## QSVT
+## Quantum Signal Processing
 
 \columns
-\strong{Quantum Singular Value Transformation (QSVT)} applies a polynomial $P$ to the eigen-/singular values of $A$:
+Given access to $U_A$, how do we implement a function of $A$?
+
+Alternating $U_A$ with tunable phase rotations produces a polynomial transformation of the singular values:
 $$
 \pmat{A & * \\ * & *} \;\mapsto\; \pmat{P(A) & * \\ * & *}.
 $$
-
-- The polynomial degree is the number of calls to the encoded operator.
-- This is the quantum analogue of counting matvecs in an iterative method.
+- Polynomial degree = number of calls to $U_A$.
 
 \column
 \row
-\figure[.75]{qsvt.png}{QSVT alternates calls to the block encoding}
+\figure[.75]{qsp.svg}{A QSP circuit}
 \endrow
 \endcolumn
 
 
 
-## QSVT (cont.)
+## Applications
 
 \columns
 ### Hamiltonian Simulation
@@ -303,32 +278,13 @@ $$
 - $f(x)=\mathrm{sgn}(x)$ gives robust search.
 \endcolumn
 
-\strong{Pick the polynomial, get the algorithm.}
-
-
-
-## QSP
-
-\columns
-Quantum signal processing (QSP) builds a polynomial transformation by alternating:
-
-- a fixed signal unitary containing the input $x$;
-- tunable phase rotations;
-- one auxiliary qubit.
-
-In standard QSP/QSVT, a circuit essentially produces one scalar polynomial output.
-
-\column
-\row
-\figure[.75]{qsp.svg}{A QSP circuit}
-\endrow
-\endcolumn
-
 
 
 ## My Work: U(N)-QSP
 
 \columns
+Standard QSP outputs one scalar polynomial per circuit run. Can we extract more?
+
 \strong{Idea:} replace the one-qubit auxiliary system by an $N$-dimensional auxiliary register.
 
 \strong{Result:} implement a \strong{matrix of polynomials}
