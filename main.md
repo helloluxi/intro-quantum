@@ -127,24 +127,6 @@ $$ p(x) = \tr(\rho M_x). $$
 
 
 
-## The Wider Landscape
-
-\todo{Placeholder: a one-page map of active quantum directions, beyond what this talk covers.}
-
-\columns
-- \strong{Quantum error correction (QEC)}: making noisy qubits reliable.
-- \strong{Variational algorithms (VQE / QAOA)}: near-term hybrid quantum-classical optimization.
-- \strong{Quantum machine learning (QNN)}: parameterized circuits as learnable models.
-
-\column
-- \strong{Cryptography}: Shor's algorithm and post-quantum security.
-- \strong{Simulation tooling}: CUDA-Q / cuQuantum and GPU-accelerated backends.
-\endcolumn
-
-\todo{Pick 2-3 to name aloud; use this to bridge into my own work.}
-
-
-
 ## 
 
 \bcenter{Part I: Quantum Metrology}
@@ -320,19 +302,25 @@ if and only if all singular values of $\bmp(z)$ lie in $[0,1]$ for $|z|\leq 1$.
 
 \columns
 ### Discrete Variable (DV)
-\figure[.42]{qubit_intro.png}{}
+\row
+\figure[.6]{qubit_intro.png}{}
+\endrow
 - Finite-dimensional qubit registers.
 - Mainstream model for quantum algorithms.
 
 \column
 ### Continuous Variable (CV)
-\figure[.55]{osc_intro.png}{}
+\row
+\figure[.8]{osc_intro.png}{}
+\endrow
 - Infinite-dimensional bosonic modes.
 - Natural in quantum optics and oscillators.
 
 \column
 ### Hybrid CV-DV
-\figure[.68]{hybrid_intro.png}{}
+\row
+\figure[.84]{hybrid_intro.png}{}
+\endrow
 - Qubits coupled to bosonic modes.
 - Promising, but hard to simulate.
 \endcolumn
@@ -342,16 +330,7 @@ if and only if all singular values of $\bmp(z)$ lie in $[0,1]$ for $|z|\leq 1$.
 ## Why Simulation Becomes Expensive
 
 \columns
-A quantum state of $n$ qubits is a complex vector of length $2^n$:
-$$
-\ket{\psi} = \pp{c_0,\, c_1,\, \ldots,\, c_{2^n-1}}^\top, \qquad \sum_k \abs{c_k}^2 = 1.
-$$
-
-- Simulating $n$ qubits means storing and updating a $2^n$ array.
-- $n=40$ qubits is already about a trillion complex amplitudes.
-- For CV systems, the Hilbert space is infinite before discretization.
-
-\strong{The central question is representation: what finite object should stand in for an infinite-dimensional state?}
+\todo{Real Numbers?}
 
 \column
 \row
@@ -361,93 +340,16 @@ $$
 
 
 
-## Fock Encoding
-
-\columns
-The textbook approach truncates Fock levels:
-$$
-\sum_{j=0}^{\infty}c_j\ket{j}_F
-\quad\mapsto\quad
-\sum_{j=0}^{N-1}c_j\ket{j}.
-$$
-
-But elementary CV operators become dense. The ladder operator is
-$$
-\hat a=\pmat{0&\sqrt{1}&&\\&0&\sqrt{2}&\\&&0&\ddots\\&&&\ddots},
-$$
-and displacement involves generalized Laguerre polynomials.
-
-\strong{The encoding fights the gates.}
-
-\column
-\row
-\figure[.8]{encodings.png}{Fock-basis vs position encoding}
-\endrow
-\endcolumn
-
-
-
-## Position Encoding
-
-\columns
-A CV state has a position wave function $\psi(q)$. Instead of storing Fock coefficients, sample the wave function on a grid:
-$$
-\enc_Q(\ket{\psi})=\sqrt{\lambda}\sum_{j=0}^{N-1}\psi(\lambda\tilde{j})\ket{j},\qquad N=2^n.
-$$
-
-- $n$ qubits give a $2^n$-point grid.
-- Position and momentum pictures are connected by the quantum Fourier transform.
-- This is closer to discretizing a field than truncating a ladder operator.
-
-\column
-\row
-\figure[.75]{encodings.png}{Wave-function encoding}
-\endrow
-\endcolumn
-
-
-
-## Why It Works
-
-\columns
-Position operators are diagonal in the position grid; momentum operators are diagonal in the momentum grid.
-
-- Any $e^{i f(\hat q)}$ is a diagonal phase layer.
-- Any $e^{i g(\hat p)}$ is the same after a QFT.
-- Gaussian gates decompose into position-only and momentum-only pieces.
-
-Example:
-$$
-\RR{\theta}
-=e^{-\frac{i}{2}\tan\frac\theta2\,\hat q^2}
- e^{-\frac{i}{2}\sin\theta\,\hat p^2}
- e^{-\frac{i}{2}\tan\frac\theta2\,\hat q^2}.
-$$
-
-\column
-\row
-\figure[.75]{heterodyne.png}{Measurements also reduce to gate decompositions}
-\endrow
-\endcolumn
-
-
-
-## My Work: Qubit Simulation of Hybrid CV-DV Quantum Systems
+## Qubit Simulation of Hybrid CV-DV Quantum Systems
 
 \columns
 \strong{Result:} Gaussian and conditional-Gaussian gates can be simulated on qubit registers with
 $$
 O\!\left(\log^2\!\left(\Gamma+\log\frac{1}{\epsilon}\right)\right)
 $$
-elementary gates per hybrid gate.
+elementary gates per hybrid gate to precision $\epsilon$, where $\Gamma$ is the photon number cutoff.
 
-\strong{Mechanism:}
-- encode wave functions on a qubit grid;
-- switch bases with QFTs;
-- implement diagonal phase layers;
-- track QFT/discretization errors rigorously.
-
-\strong{Takeaway:} the right encoding turns dense CV operators into structured qubit circuits.
+\todo{Interactive demos}
 
 \column
 \row
@@ -455,18 +357,24 @@ elementary gates per hybrid gate.
 \endrow
 \endcolumn
 
-\todo{Add one concrete example gate, such as displacement or rotation, if the audience needs a more physical anchor.}
 
 
 
-## Summary
+## TODO: GPU simulation & Beyond
 
-- \strong{Metrology}: Fisher information is local; mutual information captures globally extractable bits.
-- \strong{Signal processing}: QSVT turns matrix functions into polynomial transformations of block encodings.
-- \strong{Simulation}: position encoding plus QFTs can make hybrid CV-DV gates efficient on qubit registers.
+\todo{Placeholder: a one-page map of active quantum directions, beyond what this talk covers.}
 
-\strong{Common theme:} the representation determines what information, computation, or simulation is actually accessible.
+\columns
+- \strong{Quantum error correction (QEC)}: making noisy qubits reliable.
+- \strong{Variational algorithms (VQE / QAOA)}: near-term hybrid quantum-classical optimization.
+- \strong{Quantum machine learning (QNN)}: parameterized circuits as learnable models.
 
+\column
+- \strong{Cryptography}: Shor's algorithm and post-quantum security.
+- \strong{Simulation tooling}: CUDA-Q / cuQuantum and GPU-accelerated backends.
+\endcolumn
+
+\todo{Pick 2-3 to name aloud; use this to bridge into my own work.}
 
 
 ## 
@@ -476,7 +384,7 @@ elementary gates per hybrid gate.
 \hcenter{Thank you!}
 
 \row
-\qrcode{https://helloluxi.github.io/intro-qcqi}{Slides}
+\qrcode{https://helloluxi.github.io/intro-qcqi}{Slides<br>https://helloluxi.github.io/intro-qcqi}
 &nbsp;
-\qrcode{https://xlu.casa/s/}{Homepage}
+\qrcode{https://xlu.casa}{Homepage<br>https://xlu.casa}
 \endrow
