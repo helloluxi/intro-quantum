@@ -292,30 +292,23 @@ $$\pmat{A & * \\ * & *} \;\mapsto\; \pmat{P(A) & * \\ * & *}.$$
 
 ## My Work: U(N)-QSP
 
-\columns
-Standard QSP outputs one scalar polynomial per circuit run. Can we extract more?
+\columns[6fr 4fr]
+\strong{Motivation}:
+- Some algorithms require building multiple polynomials simultaneously. 
+- Multivariate QSP, in particular, needs more degrees of freedom than U(2)-QSP can provide;
 
-\strong{Idea:} replace the one-qubit auxiliary system by an $N$-dimensional auxiliary register.
-
-\strong{Result:} implement a \strong{matrix of polynomials}
-$$
-\bmp(U)=\{P_{jk}(U)\}
-$$
-with singular-value constraints replacing scalar boundedness constraints.
-
-\strong{Why useful:} one measurement can extract $\log N$ bits, e.g. deciding which of $N$ intervals contains a parameter.
+\strong{Result:} Given a unitary $U$ and a degree-$\leq d$ complex polynomial matrix $\bmp(z)$, there exists a $d$-query circuit implementing a block encoding
+$$\pmat{\bmp(U) & * \\ * & *}$$
+if and only if all singular values of $\bmp(z)$ lie in $[0,1]$ for $|z|\leq 1$.
 
 \column
 \row
-\figure[.45]{qsp_u.png}{$U(N)$-QSP circuit}
-\figure[.45]{quatro_decision.png}{Multi-interval decision polynomials}
+\figure[.9]{qsp_u.png}{$U(N)$-QSP circuit}
 \endrow
 \row
-\figure[.55]{quatro_comparison.png}{$U(N)$-QSP vs staged scalar QSP}
+\figure[.9]{quatro_decision.png}{Multi-interval decision polynomials}
 \endrow
 \endcolumn
-
-\todo{Explain "more output per circuit" using one analogy, then immediately return to the theorem or application.}
 
 
 
