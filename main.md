@@ -227,11 +227,12 @@ $$
 
 ## The Problem
 
-Many computational tasks reduce to computing a function of a matrix:
+Many computational tasks involve operating on matrices:
 
-- \strong{Hamiltonian simulation}: time-evolve a quantum system under $H$.
+- \strong{Hamiltonian simulation}: compute $e^{-iHt}$.
 - \strong{Linear systems}: solve $Ax = b$.
-- \strong{Search}: find a marked item in an unsorted database.
+- \strong{Eigenvalue / SVD}: decompose $A = U\Sigma V^\dagger$.
+- \strong{Matrix multiplication}: compute $AB$.
 
 How do we implement these efficiently on a quantum computer?
 
