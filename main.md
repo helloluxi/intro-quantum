@@ -183,7 +183,7 @@ $$
 I(X,\Phi)=\sum_x\int p(\phi)p(x|\phi)\log\frac{p(x|\phi)}{p(x)}\,d\phi.
 $$
 
-- HL: $I = \log N + o(\log N)$; SQL: $I = \frac{1}{2}\log N + o(\log N)$.
+- HL: $I = \log N + o(\log N)$; SQL: $I = \frac{1}{2}\log N + o(\log N)$. \cite{Hassani, Macchiavello and Maccone. "Digital Quantum Estimation." PRL 119, 200502 (2017).}
 
 \endcolumn
 
@@ -195,7 +195,7 @@ $$
 \strong{Results}
 - Mutual Information Bound by Fisher Information:
   $$I(X,\Phi)\leq \log\pp{1+\frac{1}{2}\int_a^b \sqrt{F(\phi)}\,d\phi}.$$
-- In noisy quantum phase estimation, the extractable information is capped at SQL scaling.
+- In noisy quantum phase estimation, the extractable information is capped at SQL scaling. \cite{Kołodyński and Demkowicz-Dobrzański. "Efficient tools for quantum metrology with uncorrelated noise." New Journal of Physics 15, no. 7 (2013): 073043.}
   $$ I(X,\Phi) \leq \log\left(1 + \pi\sqrt{\frac{N\eta}{1-\eta}} \right).$$
   
 
@@ -253,19 +253,14 @@ $$
 
 
 
-## Quantum Signal Processing
+## Quantum Signal Processing & Singular Value Transformation
 
 \columns[6fr 4fr]
-\strong{Quantum Signal Processing (QSP)} alternates calls to $U_A$ with phase rotations to implement a polynomial transformation:
-$$
-\pmat{A & * \\ * & *}
-\;\mapsto\;
-\pmat{P(A) & * \\ * & *}.
-$$
+\strong{Quantum Signal Processing (QSP)} interleaves signal oracle $W(x) = \pmat{x & i\sqrt{1-x^2} \\ i\sqrt{1-x^2} & x}$ to $W(P(x))$. \strong{Quantum Singular Value Transformation (QSVT)} lifts QSP to matrices.
 
-\strong{Theory:} $P$ is implementable iff:
+\strong{Theory} \cite{Gilyén, Su, Low and Wiebe. "Quantum singular value transformation and beyond." arXiv:1806.01838 (2018).}: $P$ is achievable iff:
 - $|P(x)| \leq 1$ on $x\in[-1,1]$;
-- $P$ has polynomial degree $\le d$;
+- $\deg P \leq d$;
 - $P$ has parity $d \bmod 2$.
 
 \row
@@ -278,7 +273,7 @@ $$
 \figure[.9]{poly_inverse.svg}{}
 \endrow
 - $f(x)=x^{-1}$ solves $Ax=b$.
-- Query Complexity: $O(\kappa\log(1/\epsilon))$
+- Query Complexity: $O(\kappa\log(1/\epsilon))$ \cite{Childs, Kothari and Somma. "Quantum algorithm for systems of linear equations with exponentially improved dependence on precision." SIAM J. Comput. 46 (2017).}
   - $\kappa$: Condition number
 \endcolumn
 
