@@ -1,2 +1,4 @@
-assets/
+ref/
 out/
+ai/
+*.bkp

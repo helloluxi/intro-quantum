@@ -1,0 +1,52 @@
+<mxfile host="Electron" agent="Codex">
+  <diagram id="block-mul" name="Block multiplication">
+    <mxGraphModel dx="772" dy="1209" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="680" pageHeight="250" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="label-ab" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=16" value="$$a_B: |0\rangle$$" vertex="1">
+          <mxGeometry height="26" width="90" x="30" y="63" as="geometry" />
+        </mxCell>
+        <mxCell id="label-system" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=16" value="$$\mathrm{system}: |\psi\rangle$$" vertex="1">
+          <mxGeometry height="26" width="120" x="10" y="113" as="geometry" />
+        </mxCell>
+        <mxCell id="label-aa" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=16" value="$$a_A: |0\rangle$$" vertex="1">
+          <mxGeometry height="26" width="90" x="30" y="163" as="geometry" />
+        </mxCell>
+        <mxCell id="wire-ab" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeWidth=2" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="122" y="76" as="sourcePoint" />
+            <mxPoint x="604" y="76" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wire-system" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeWidth=2" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="122" y="126" as="sourcePoint" />
+            <mxPoint x="604" y="126" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wire-aa" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeWidth=2" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="122" y="176" as="sourcePoint" />
+            <mxPoint x="604" y="176" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ub" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=16;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=24" value="$$U_B$$" vertex="1">
+          <mxGeometry height="90" width="98" x="188" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="ua" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=16;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=24" value="$$U_A$$" vertex="1">
+          <mxGeometry height="90" width="98" x="356" y="106" as="geometry" />
+        </mxCell>
+        <mxCell id="post-ab" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;fontSize=15" value="$$0$$" vertex="1">
+          <mxGeometry height="30" width="34" x="580" y="61" as="geometry" />
+        </mxCell>
+        <mxCell id="post-aa" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;fontSize=15" value="$$0$$" vertex="1">
+          <mxGeometry height="30" width="34" x="580" y="161" as="geometry" />
+        </mxCell>
+        <mxCell id="output" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=16" value="$$AB|\psi\rangle$$" vertex="1">
+          <mxGeometry height="26" width="70" x="617" y="113" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

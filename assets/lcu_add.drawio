@@ -1,0 +1,64 @@
+<mxfile host="Electron" agent="Codex">
+  <diagram id="lcu-add" name="LCU addition">
+    <mxGraphModel dx="772" dy="1209" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="750" pageHeight="270" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="label-ancilla" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=16" value="$$\mathrm{ancilla}: |0\rangle$$" vertex="1">
+          <mxGeometry height="26" width="120" x="5" y="67" as="geometry" />
+        </mxCell>
+        <mxCell id="label-system" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=16" value="$$\mathrm{system}: |\psi\rangle$$" vertex="1">
+          <mxGeometry height="26" width="120" x="5" y="157" as="geometry" />
+        </mxCell>
+        <mxCell id="wire-ancilla" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeWidth=2" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="80" as="sourcePoint" />
+            <mxPoint x="716" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wire-system" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeWidth=2" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="170" as="sourcePoint" />
+            <mxPoint x="640" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="prepare" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=16;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;fontSize=14;fontStyle=1" value="$$\mathrm{PREPARE}$$" vertex="1">
+          <mxGeometry height="46" width="106" x="145" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="ctrl-ua-line" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeWidth=2" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="295" y="88" as="sourcePoint" />
+            <mxPoint x="295" y="142" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ctrl-ua-dot" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;" value="" vertex="1">
+          <mxGeometry height="16" width="16" x="287" y="72" as="geometry" />
+        </mxCell>
+        <mxCell id="ua" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=16;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=20" value="$$U_A$$" vertex="1">
+          <mxGeometry height="56" width="80" x="255" y="142" as="geometry" />
+        </mxCell>
+        <mxCell id="ctrl-ub-line" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeWidth=2" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="415" y="88" as="sourcePoint" />
+            <mxPoint x="415" y="142" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ctrl-ub-dot" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;strokeWidth=2;" value="" vertex="1">
+          <mxGeometry height="16" width="16" x="407" y="72" as="geometry" />
+        </mxCell>
+        <mxCell id="ub" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=16;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=20" value="$$U_B$$" vertex="1">
+          <mxGeometry height="56" width="80" x="375" y="142" as="geometry" />
+        </mxCell>
+        <mxCell id="unprepare" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=16;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;fontSize=13" value="$$\mathrm{PREPARE}^{\dagger}$$" vertex="1">
+          <mxGeometry height="46" width="110" x="480" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="post" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;fontSize=15" value="$$0$$" vertex="1">
+          <mxGeometry height="30" width="34" x="622" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="output" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=15" value="$$(\alpha A{+}\beta B)|\psi\rangle$$" vertex="1">
+          <mxGeometry height="26" width="116" x="642" y="157" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

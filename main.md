@@ -161,7 +161,7 @@ $$ p(x) = \tr(\rho M_x). $$
 
 \columns
 \row
-\figure[.52]{qfi_illu.svg}{Quantum Fisher information}
+\figure[.4]{qfi_illu.svg}{Fisher information}
 \endrow
 
 QFI measures \strong{local sensitivity}: how well nearby values of $\phi$ can be separated.
@@ -170,9 +170,11 @@ $$
 F_Q(\phi)=\max_M \sum_x \frac{\pp{\partial_\phi p(x|\phi)}^2}{p(x|\phi)}.
 $$
 
+- HL: $F\sim N^2$; SQL: $F\sim N$.
+
 \column
 \row
-\figure[.88]{alice_bob.svg}{Mutual information}
+\figure[.66]{alice_bob.svg}{Mutual information}
 \endrow
 
 MI measures \strong{global distinguishability}: how many bits of information is extracted.
@@ -180,6 +182,8 @@ MI measures \strong{global distinguishability}: how many bits of information is 
 $$
 I(X,\Phi)=\sum_x\int p(\phi)p(x|\phi)\log\frac{p(x|\phi)}{p(x)}\,d\phi.
 $$
+
+- HL: $I = \log N + o(\log N)$; SQL: $I = \frac{1}{2}\log N + o(\log N)$.
 
 \endcolumn
 
@@ -220,54 +224,62 @@ How do we implement these efficiently on a quantum computer?
 
 
 
-## Solution: Block Encoding and Quantum Signal Processing
+## Block Encoding: Matrix Arithmetic
+
+A \strong{block encoding} embeds a matrix $A$ in a larger unitary:
+$$
+(\bra{0}\otimes I) U_A (\ket{0}\otimes I) = A,
+\qquad
+U_A = \pmat{A & * \\ * & *}.
+$$
 
 \columns
-\strong{Block Encoding}: embed $A$ in a larger unitary:
-$$U_A = \pmat{A & * \\ * & *}.$$
-
-This representation enables matrix arithmetic:
-- \strong{Multiplication}: one can realize a block encoding of $AB$ using one call to $U_A$ and $U_B$ each.
-- \strong{Addition}: one can realize a block encoding of $A = \sum_j \alpha_j A_j$, where $\sum_j \abs{\alpha_j} \le 1$, using one call to $U_{A_j}$ each.
+### Product
+\row
+\figure[.98]{block_mul.svg}{}
+\endrow
+- Compose $U_B$ then $U_A$; post-select both ancillas to $|0\rangle$.
+- Result: a block encoding of $AB$.
 
 \column
-\strong{Quantum Signal Processing (QSP)}: alternating $d$ calls to $U_A$ with phase rotations implements a polynomial transformation:
-$$\pmat{A & * \\ * & *} \;\mapsto\; \pmat{P(A) & * \\ * & *}.$$
-
-\strong{Theory:} $P$ is implementable iff $|P(x)| \leq 1$ on $[-1,1]$, has degree $\le d$ and has parity $d \bmod 2$.
-
+### Linear Combination 
 \row
-\figure[.75]{qsp.svg}{QSP circuit}
+\figure[.98]{lcu_add.svg}{}
 \endrow
+- $\mathrm{PREPARE}$: $|0\rangle \mapsto \sqrt{\alpha}|0\rangle + \sqrt{\beta}|1\rangle$.
+- Apply $U_A$ controlled on ancilla $= |0\rangle$, $U_B$ on ancilla $= |1\rangle$.
+- Result is a block encoding of $\alpha A + \beta B$.
 \endcolumn
 
 
 
-## Applications
+## Quantum Signal Processing
 
-\columns
-### Hamiltonian Simulation
+\columns[6fr 4fr]
+\strong{Quantum Signal Processing (QSP)} alternates calls to $U_A$ with phase rotations to implement a polynomial transformation:
+$$
+\pmat{A & * \\ * & *}
+\;\mapsto\;
+\pmat{P(A) & * \\ * & *}.
+$$
+
+\strong{Theory:} $P$ is implementable iff:
+- $|P(x)| \leq 1$ on $x\in[-1,1]$;
+- $P$ has polynomial degree $\le d$;
+- $P$ has parity $d \bmod 2$.
+
 \row
-\figure[.9]{poly_exp.svg}{}
+\figure[.95]{qsp.svg}{QSP circuit}
 \endrow
-- $f(x)=e^{itx}$ gives time evolution.
-- Query Complexity: $O(t + \log(1/\epsilon))$
 
 \column
-### Linear Systems
+### Eg: Linear Systems Solver
 \row
 \figure[.9]{poly_inverse.svg}{}
 \endrow
 - $f(x)=x^{-1}$ solves $Ax=b$.
 - Query Complexity: $O(\kappa\log(1/\epsilon))$
-
-\column
-### Fixed-Point Search
-\row
-\figure[.9]{poly_sgn.svg}{}
-\endrow
-- $f(x)=\mathrm{sgn}(x)$ gives robust search.
-- Query Complexity: $O(\delta^{-1}\log(1/\epsilon))$
+  - $\kappa$: Condition number
 \endcolumn
 
 
