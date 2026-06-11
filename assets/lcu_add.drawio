@@ -10,7 +10,7 @@
         <mxCell id="label-system" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=16" value="$$\mathrm{system}: |\psi\rangle$$" vertex="1">
           <mxGeometry height="26" width="120" x="5" y="157" as="geometry" />
         </mxCell>
-        <mxCell id="wire-ancilla" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeWidth=2" value="">
+        <mxCell id="wire-ancilla" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeWidth=2;entryX=0.529;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="post" value="">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="130" y="80" as="sourcePoint" />
             <mxPoint x="716" y="80" as="targetPoint" />
