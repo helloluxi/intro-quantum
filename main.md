@@ -192,11 +192,10 @@ $$
 ## How many bits does your quantum estimation return? 
 
 \columns
-\strong{Results}
+\strong{Results} \cite{Górecki, Lu, Macchiavello, and Maccone. "Mutual information bounded by Fisher information." Physical Review Research 7, L022013 (2025).}
 - Mutual Information Bound by Fisher Information:
   $$I(X,\Phi)\leq \log\pp{1+\frac{1}{2}\int_a^b \sqrt{F(\phi)}\,d\phi}.$$
-- In noisy quantum phase estimation, the extractable information is capped at SQL scaling. \cite{Kołodyński and Demkowicz-Dobrzański. "Efficient tools for quantum metrology with uncorrelated noise." New Journal of Physics 15, no. 7 (2013): 073043.}
-  $$ I(X,\Phi) \leq \log\left(1 + \pi\sqrt{\frac{N\eta}{1-\eta}} \right).$$
+- In noisy quantum phase estimation, the extractable information is capped at SQL scaling.  $$ I(X,\Phi) \leq \log\left(1 + \pi\sqrt{\frac{N\eta}{1-\eta}} \right).$$
   
 
 \column
@@ -279,14 +278,14 @@ $$
 
 
 
-## My Work: U(N)-QSP
+## My Work: U(N)-QSP/QSVT
 
 \columns[6fr 4fr]
 \strong{Motivation}:
 - Some algorithms require building multiple polynomials simultaneously. 
 - Multivariate QSP, in particular, needs more degrees of freedom than U(2)-QSP can provide;
 
-\strong{Result:} Given a unitary $U$ and a degree-$\leq d$ complex polynomial matrix $\bmp(z)$, there exists a $d$-query circuit implementing a block encoding
+\strong{Result} \cite{Lu, Liu, and Lin. "Quantum Signal Processing and Quantum Singular Value Transformation on U(N)." Quantum 10, 2048 (2026).}: Given a unitary $U$ and a degree-$\leq d$ complex polynomial matrix $\bmp(z)$, there exists a $d$-query circuit implementing a block encoding
 $$\pmat{\bmp(U) & * \\ * & *}$$
 if and only if all singular values of $\bmp(z)$ lie in $[0,1]$ for $|z|\leq 1$.
 
