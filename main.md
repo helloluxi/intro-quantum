@@ -499,7 +499,7 @@ Every stage of quantum research leans on classical horsepower — and the GPU is
 \hcenter{Thank you!}
 
 \row
-\qrcode{https://helloluxi.github.io/intro-qcqi}{Slides<br>https://helloluxi.github.io/intro-qcqi}
+\qrcode{https://helloluxi.github.io/intro-quantum}{Slides<br>https://helloluxi.github.io/intro-quantum}
 &nbsp;
 \qrcode{https://xlu.casa}{Homepage<br>https://xlu.casa}
 \endrow
