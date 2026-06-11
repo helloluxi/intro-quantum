@@ -477,26 +477,20 @@ Two numbers decide what a quantum computer can do: \strong{how many qubits} and 
 
 
 
-## Other Topics
+## Other Topics: Quantum Still Runs on Classical Compute
 
-\columns
-\strong{Algorithms \& learning}
-- \strong{Variational quantum algorithms}: VQE for ground-state energies, QAOA for combinatorial optimization, QNNs as trainable circuits — the natural fit for NISQ hardware.
-- \strong{Quantum machine learning}: quantum kernels and data re-uploading, with provable advantage still an open question.
+Every stage of quantum research leans on classical horsepower — and the GPU is the engine behind it.
 
-\strong{Reliability}
-- \strong{Quantum error correction}: surface codes turn many noisy qubits into one reliable logical qubit.
-- \strong{AI decoders}: neural networks decode error syndromes faster and more accurately than hand-tuned rules. 
-
-\column
-\strong{Classical \& HPC partnership}
-- \strong{Physics-informed neural networks}: classical nets solve Schrödinger/PDE problems mesh-free — a foil to variational quantum solvers.
-- \strong{GPU acceleration}: state-vector \& tensor-network simulation, \strong{CUDA-Q / cuQuantum}, and my hybrid CV-DV simulator (github.com/helloluxi/cuda-cvdv).
-
-\strong{Security}
-- \strong{Post-quantum cryptography}: lattice-based schemes hardening today's systems against Shor's algorithm.
-\endcolumn
-
+- \strong{State preparation}: loading data or an ansatz into a circuit is itself a classical optimization problem.
+- \strong{Gate compilation}: transpiling a circuit onto a hardware ISA — and translating across ISAs (qubit, oscillator, hybrid) — is heavy classical search.
+- \strong{Hamiltonian simulation}: compiling $e^{-iHt}$ via Trotter / QSP means computing phase factors and step counts offline, at high precision.
+- \strong{Quantum AI}: quantum circuits as learning models.
+  - \strong{VQE / QAOA}: variational circuits trained by a classical loop for ground-state energies and combinatorial optimization.
+  - \strong{QNN}: parameterized circuits as trainable networks, with quantum kernels and data re-uploading.
+- \strong{AI for quantum}: neural networks serving the machine, all trained on a fast GPU backend.
+  - \strong{Neural quantum states}: network ansätze solve the many-body Schrödinger equation, rivaling tensor networks.
+  - \strong{AI decoders}: networks like \strong{AlphaQubit} read error syndromes faster and more accurately than hand-tuned matching.
+  - \strong{Control & compilation}: ML shapes control pulses, synthesizes circuits, and finds QSP phase factors.
 
 ## 
 
