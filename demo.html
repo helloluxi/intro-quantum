@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Oscillator's Native Gates</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #1a1a2e; background: #fafafe;
+    display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+  }
+  header { text-align: center; padding: 22px 16px 6px; }
+  header h1 { margin: 0; font-size: clamp(20px, 2.8vw, 34px); font-weight: 700; }
+  header p  { margin: 6px 0 0; color: #6b7280; font-size: clamp(12px, 1.4vw, 16px); }
+  #stage { flex: 1; position: relative; min-height: 0; }
+  canvas { width: 100%; height: 100%; display: block; }
+  #caption { position: absolute; left: 0; right: 0; top: 16px; text-align: center; pointer-events: none; }
+  #gateName { font-size: clamp(22px, 3vw, 42px); font-weight: 800; letter-spacing: .5px; }
+  #gateFormula { font-size: clamp(15px, 2vw, 27px); color: #2563eb; margin-top: 6px;
+    font-family: "Latin Modern Math", "Cambria Math", Georgia, serif; }
+  #gateParam { font-size: clamp(13px, 1.5vw, 19px); color: #6b7280; margin-top: 4px; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<header>
+  <h1>An Oscillator's Native Gates</h1>
+  <p>Position wave function&nbsp; &psi;(q)&nbsp; — height = |&psi;|, &nbsp;color = phase</p>
+</header>
+
+<div id="stage">
+  <canvas id="cv"></canvas>
+  <div id="caption">
+    <div id="gateName">—</div>
+    <div id="gateFormula"></div>
+    <div id="gateParam"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+const PI = Math.PI;
+const SQ2 = Math.sqrt(2);
+const PI_M14 = Math.pow(PI, -0.25);      // pi^{-1/4}
+const X_MIN = -6.5, X_MAX = 6.5;
+const Y_MAX = 1.55;                       // display ceiling for |psi|
+
+// coherent-state position wave function: |psi(x)| and arg(psi(x))
+function coherent(x, reA, imA) {
+  const sq2re = SQ2 * reA, sq2im = SQ2 * imA;
+  const mag = PI_M14 * Math.exp(-(x - sq2re) * (x - sq2re) / 2);
+  const ang = sq2im * (x - sq2re / 2);
+  return { mag, ang };
+}
+
+const GATES = [
+  {
+    name: "Displacement  (q)",
+    formula: "D(α) = e^{α a† − α* a},  α ∈ ℝ",
+    dur: 3.6,
+    sweep: t => 2.6 * Math.sin(PI * t),
+    paramLabel: p => "α = " + p.toFixed(2) + "  (shifts position)",
+    psi: (x, p) => coherent(x, p, 0)
+  },
+  {
+    name: "Displacement  (p)",
+    formula: "D(iβ) = e^{iβ(a† + a)},  β ∈ ℝ",
+    dur: 3.6,
+    sweep: t => 2.6 * Math.sin(PI * t),
+    paramLabel: p => "β = " + p.toFixed(2) + "  (winds the phase)",
+    psi: (x, p) => coherent(x, 0, p)
+  },
+  {
+    name: "Squeezing",
+    formula: "S(r) = e^{ r (a² − a†²)/2 }",
+    dur: 3.6,
+    sweep: t => 1.35 * Math.sin(PI * t),
+    paramLabel: p => "r = " + p.toFixed(2) + "  (narrows / sharpens)",
+    psi: (x, r) => {
+      const half = Math.exp(-r / 2), scale = half * half;
+      const c = coherent(x / scale, 0, 0);
+      return { mag: c.mag / half, ang: 0 };
+    }
+  },
+  {
+    name: "Rotation",
+    formula: "R(θ) = e^{ − iθ a† a }",
+    dur: 4.6,
+    sweep: t => 2 * PI * t,
+    paramLabel: p => "θ = " + (p / PI).toFixed(2) + "π  (rotates in phase space)",
+    psi: (x, th) => coherent(x, 2.5 * Math.cos(th), -2.5 * Math.sin(th))
+  }
+];
+
+function phaseColor(ang) {
+  const h = ((ang % (2 * PI)) + 2 * PI) % (2 * PI);
+  return "hsl(" + (h / (2 * PI) * 360).toFixed(0) + ",78%,55%)";
+}
+
+const cv = document.getElementById("cv");
+const ctx = cv.getContext("2d");
+let W = 0, H = 0;
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  const r = cv.getBoundingClientRect();
+  W = r.width; H = r.height;
+  cv.width = Math.round(W * dpr);
+  cv.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener("resize", resize);
+
+const x2px = x => (x - X_MIN) / (X_MAX - X_MIN) * W;
+const baselineY = () => H * 0.80;
+const mag2h = m => m / Y_MAX * (H * 0.58);
+
+function draw(gate, p) {
+  ctx.clearRect(0, 0, W, H);
+  const base = baselineY();
+
+  ctx.strokeStyle = "#dcdce8"; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, base); ctx.lineTo(W, base); ctx.stroke();
+  ctx.fillStyle = "#aaa"; ctx.font = "12px sans-serif"; ctx.textAlign = "center";
+  for (let xv = -6; xv <= 6; xv += 2) {
+    const px = x2px(xv);
+    ctx.beginPath(); ctx.moveTo(px, base - 3); ctx.lineTo(px, base + 3); ctx.stroke();
+    ctx.fillText(xv === 0 ? "q=0" : xv, px, base + 18);
+  }
+
+  const step = 2;
+  for (let px = 0; px <= W; px += step) {
+    const x = X_MIN + (px / W) * (X_MAX - X_MIN);
+    const { mag, ang } = gate.psi(x, p);
+    const h = mag2h(mag);
+    if (h < 0.4) continue;
+    ctx.fillStyle = phaseColor(ang);
+    ctx.globalAlpha = 0.92;
+    ctx.fillRect(px, base - h, step + 0.6, h);
+  }
+  ctx.globalAlpha = 1;
+
+  ctx.strokeStyle = "rgba(26,26,46,.55)"; ctx.lineWidth = 2; ctx.beginPath();
+  for (let px = 0; px <= W; px += 2) {
+    const x = X_MIN + (px / W) * (X_MAX - X_MIN);
+    const { mag } = gate.psi(x, p);
+    const y = base - mag2h(mag);
+    if (px === 0) ctx.moveTo(px, y); else ctx.lineTo(px, y);
+  }
+  ctx.stroke();
+}
+
+const gateName = document.getElementById("gateName");
+const gateFormula = document.getElementById("gateFormula");
+const gateParam = document.getElementById("gateParam");
+
+let segIndex = 0, segStart = null;
+function frame(now) {
+  if (segStart === null) segStart = now;
+  const gate = GATES[segIndex];
+  let t = (now - segStart) / 1000 / gate.dur;
+  if (t >= 1) { segIndex = (segIndex + 1) % GATES.length; segStart = now; t = 0; }
+  const p = gate.sweep(t);
+
+  gateName.textContent = gate.name;
+  gateFormula.textContent = gate.formula;
+  gateParam.textContent = gate.paramLabel(p);
+  draw(gate, p);
+  requestAnimationFrame(frame);
+}
+
+resize();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

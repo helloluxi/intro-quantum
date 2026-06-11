@@ -71,6 +71,7 @@ Quantum entanglement makes the dimension of the state space grow \strong{exponen
 \figure[.27]{pauli.png}{Pauli-X gate}
 \endrow
 
+\todo{Add controlled gate.}
 
 
 ## Noise
@@ -312,115 +313,136 @@ if and only if all singular values of $\bmp(z)$ lie in $[0,1]$ for $|z|\leq 1$.
 
 \bcenter{Part III: Quantum Simulation}
 
-## Quantum Simulation
+## Flavors of Quantum Hardware
+
+Quantum machines are built from different physical systems, each with its own strengths.
 
 \columns
-### Discrete Variable (DV)
+### Qubits (Discrete-Variable, DV)
 \row
 \figure[.6]{qubit_intro.png}{}
 \endrow
-- Finite-dimensional qubit registers.
-- Mainstream model for quantum algorithms.
+- Discrete two-level cells.
+- The mainstream model; easy to control.
 
 \column
-### Continuous Variable (CV)
+### Oscillators (Continuous-Variable, CV)
 \row
 \figure[.8]{osc_intro.png}{}
 \endrow
-- Infinite-dimensional bosonic modes.
-- Natural in quantum optics and oscillators.
+- A field with infinitely many levels.
+- Compact; native to optics and acoustics.
 
 \column
 ### Hybrid CV-DV
 \row
 \figure[.84]{hybrid_intro.png}{}
 \endrow
-- Qubits coupled to bosonic modes.
-- Promising, but hard to simulate.
+- Qubits coupled to oscillators.
+- Best of both — the new frontier.
 \endcolumn
 
 
 
-## Why Simulation Becomes Expensive
+## Gaussian Operations
+\columns
+
+Their Hamiltonians are built from \strong{ladder operators} $\hat a,\hat a^\dagger$ that add or remove one quantum.
+
+In the \strong{Fock basis} $\ket{0},\ket{1},\ket{2},\dots$ (photon-number levels), an operator is just a matrix — e.g. $\hat a$ steps one level down:
+$$
+\hat a = \pmat{0 & 1 & 0 & \cdots \\ 0 & 0 & \sqrt{2} & \cdots \\ 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \ddots}.
+$$
+
+\column
+\strong{Native (Gaussian) gates} reshape the state:
+
+- \strong{Displace}: $D(\alpha)=e^{\alpha\hat a^\dagger-\alpha^*\hat a}$
+- \strong{Rotate}: $R(\theta)=e^{-i\theta\hat{n}}=e^{-i\theta\,\hat a^\dagger\hat a}$
+- \strong{Squeeze}: $S(r)=e^{\frac{r}{2}(\hat a^2-\hat a^{\dagger2})}$
+- \strong{Beam splitter}: $\mathrm{BS}(\theta)=e^{-i\theta(\hat a^\dagger\hat b+\hat a\hat b^\dagger)}$ (two modes)
+
+<div style="text-align:center; margin-top:28px;"><a href="demo.html" target="_blank" style="display:inline-block; background:transparent; color:#2563eb; border:2px solid #2563eb; padding:12px 26px; border-radius:12px; text-decoration:none; font-weight:700; font-size:1.3em;">▶ Live demo: rolling wave function</a></div>
+\endcolumn
+
+
+
+## Simulating a Bosonic Hamiltonian
 
 \columns
-A bosonic mode lives in an \strong{infinite-dimensional} space:
-$$\ket{\psi} = \sum_{j=0}^{\infty} c_j \ket{j}.$$
+Much of chemistry and materials science is really about \strong{bosons}: vibrations in molecules, phonons in solids, photons in a cavity.
 
-To run it on qubits, we truncate and encode. In the natural \strong{Fock encoding}, even the ladder operator is dense:
+A real model — e.g. the Bose–Hubbard Hamiltonian for bosons hopping ($J$) and interacting ($U$) on a lattice:
 $$
-\hat{a}=\pmat{
-0 & 1 & 0 & \cdots \\
-0 & 0 & \sqrt{2} & \cdots \\
-0 & 0 & 0 & \cdots \\
-\vdots & \vdots & \vdots & \ddots
-}.
+H = -J\!\!\sum_{\langle i,j\rangle}\!\! \hat a_i^\dagger \hat a_j \;+\; \frac{U}{2}\sum_i \hat n_i(\hat n_i-1).
 $$
-So a simple displacement $\hat{D}(\alpha)=e^{\alpha\hat{a}^\dagger-\alpha^*\hat{a}}$ becomes a \strong{dense} matrix — cost \strong{exponential} in the qubits per mode.
+
+To simulate it, compile the evolution $e^{-iHt}$ from native gates.
+
+\column
+- \strong{Trotter} — split a sum into small steps:
+$$e^{-i(A+B)t} \approx \big(e^{-iAt/r}\,e^{-iBt/r}\big)^r.$$
+- \strong{BCH} — build products from commutators:
+$$e^{itA}e^{itB}e^{-itA}e^{-itB} \approx e^{-t^2[A,B]}.$$
+
+A single qubit steering displacements can then assemble \strong{any} oscillator interaction. \cite{Kang, Soley, Crane, Girvin, and Wiebe. "Leveraging Hamiltonian simulation techniques to compile operations on bosonic devices." arXiv:2303.15542 (2023).}
+\endcolumn
+
+
+
+## Different Machines, Different Instruction Sets
+
+\columns
+Each machine exposes its own \strong{instruction set architecture (ISA)} — the operations it runs natively:
+
+- \strong{Qubits}:
+  - CNOT $+$ single-qubit rotations.
+  - Clifford $+\,T$ (fault-tolerent).
+- \strong{Oscillators}:
+  - Cubic ISA: Gaussian gates $+$ one cubic gate.
+- \strong{Hybrid Oscillator-Qubit}: \cite{Liu, Singh, Smith, et al. "Hybrid Oscillator-Qubit Quantum Processors." arXiv:2407.10381 (2024).}
+  - phase-space ISA: conditional displace + qubit rotation + beam splitter 
+  - Fock-space ISA: SNAP + qubit rotation + beam splitter
+  - sideband ISA: Jaynes-Cumming + displace + beam splitter
 
 \column
 \row
-\figure[.75]{comp_power.svg}{$A\to B$: can hardware $A$ efficiently simulate processor $B$?}
+\figure[.9]{comp_power.svg}{$A\to B$: can machine $A$ efficiently run machine $B$?}
 \endrow
 \endcolumn
 
 
 
-## The Fix: Position Encoding
+## My Work: Efficient Qubit Simulation of Hybrid CV-DV Processor
 
-\columns
-Encode the \strong{wave function} on a grid instead of Fock levels:
+\strong{My result} \cite{Lu, Bakalov, and Liu. "Efficient Qubit Simulation of Hybrid Oscillator-Qubit Quantum Processors." (2025).}: Phase-space ISA can be emulated on qubits with CNOT+rotation ISA with complexity
 $$
-\mathrm{Enc}_Q(\ket{\psi}) = \sqrt{\lambda}\sum_{j} \psi(\lambda\tilde{j})\,\ket{j}.
+O\!\left(\log^2\!\left(\Gamma+\log\tfrac{1}{\epsilon}\right)\right)
 $$
+per gate, where $\Gamma$ is fock level cutoff and $\epsilon$ is accuracy.
 
-\strong{Key idea}:
-- Position-type gates $e^{it\hat{q}}$ are \strong{exact} on the position grid.
-- Momentum-type gates $e^{it\hat{p}}$ are \strong{exact} on the momentum grid.
-- A cheap quantum Fourier transform (QFT, $O(n^2)$ gates) hops between the two.
-
-The \strong{only} error comes from the QFT — and it is well controlled.
-
-\column
 \row
-\figure[1]{encodings.png}{Position vs. momentum encoding of a wave function.}
+\figure[.4]{compare_fock.png}{Same accuracy, far fewer gates.}
+\figure[.3]{advantage.png}{When real hybrid hardware wins (red) vs. when qubit emulation suffices (blue).}
 \endrow
-\endcolumn
 
 
 
-## Qubit Simulation of Hybrid CV-DV Quantum Systems
+
+
+## And GPUs Emulate Qubits
 
 \columns
-\strong{Result:} Gaussian and conditional-Gaussian gates can be simulated on qubit registers with
-$$
-O\!\left(\log^2\!\left(\Gamma+\log\frac{1}{\epsilon}\right)\right)
-$$
-elementary gates per hybrid gate to precision $\epsilon$, where $\Gamma$ is the photon number cutoff.
+At the bottom of the stack, a \strong{GPU} emulates the qubit machine itself — how we build, test, and scale quantum algorithms before the hardware exists.
 
-This covers displacement, rotation, squeezing, beam splitter, and their qubit-conditional versions — an \strong{exponential} improvement over Fock encoding.
+- I built a \strong{CUDA} simulator for hybrid oscillator-qubit processors: github.com/helloluxi/cuda-cvdv.
+- Production tooling: \strong{CUDA-Q / cuQuantum} and GPU-accelerated backends.
 
 \column
-\row
-\figure[.75]{hybrid_intro.png}{Hybrid oscillator-qubit systems}
-\endrow
-\endcolumn
-
-
-
-
-## GPU Simulation & Beyond
-
-Simulating these qubit circuits classically is exactly what GPUs accelerate — how we test, scale, and benchmark new ideas before real hardware catches up.
-
-\columns
-- \strong{Quantum error correction (QEC)}: making noisy qubits reliable.
-- \strong{Variational algorithms (VQE / QAOA)}: near-term hybrid quantum-classical optimization.
-- \strong{Quantum machine learning (QNN)}: parameterized circuits as learnable models.
-
-\column
+\strong{Frontiers this glimpse skipped:}
+- \strong{Error correction}: making noisy qubits reliable.
+- \strong{Variational & quantum ML}: trainable quantum circuits.
 - \strong{Cryptography}: Shor's algorithm and post-quantum security.
-- \strong{Simulation tooling}: CUDA-Q / cuQuantum and GPU-accelerated backends.
 \endcolumn
 
 
