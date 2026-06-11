@@ -460,19 +460,41 @@ per gate, where $\Gamma$ is fock level cutoff and $\epsilon$ is accuracy.
 
 
 
-## And GPUs Emulate Qubits
+## The Quantum Computing Landscape
 
 \columns
-At the bottom of the stack, a \strong{GPU} emulates the qubit machine itself — how we build, test, and scale quantum algorithms before the hardware exists.
+Two numbers decide what a quantum computer can do: \strong{how many qubits} and \strong{how clean each gate is}.
 
-- I built a \strong{CUDA} simulator for hybrid oscillator-qubit processors: github.com/helloluxi/cuda-cvdv.
-- Production tooling: \strong{CUDA-Q / cuQuantum} and GPU-accelerated backends.
+- \strong{Classically simulable}: too few qubits, or too noisy — a laptop keeps up.
+- \strong{NISQ}: enough qubits to be hard to simulate, but no error correction — today's machines live here.
+- \strong{Fault-tolerant}: gate error below the surface-code threshold ($\sim 1\%$) — error correction kicks in and Shor-scale algorithms become reachable.
 
 \column
-\strong{Frontiers this glimpse skipped:}
-- \strong{Error correction}: making noisy qubits reliable.
-- \strong{Variational & quantum ML}: trainable quantum circuits.
-- \strong{Cryptography}: Shor's algorithm and post-quantum security.
+\row
+\figure[.95]{landscape.png}{Qubit count vs. gate error rate. \cite{Jaques. "The Landscape of Quantum Computing." https://sam-jaques.appspot.com/quantum_landscape (2026). }}
+\endrow
+\endcolumn
+
+
+
+## Other Topics
+
+\columns
+\strong{Algorithms \& learning}
+- \strong{Variational quantum algorithms}: VQE for ground-state energies, QAOA for combinatorial optimization, QNNs as trainable circuits — the natural fit for NISQ hardware.
+- \strong{Quantum machine learning}: quantum kernels and data re-uploading, with provable advantage still an open question.
+
+\strong{Reliability}
+- \strong{Quantum error correction}: surface codes turn many noisy qubits into one reliable logical qubit.
+- \strong{AI decoders}: neural networks decode error syndromes faster and more accurately than hand-tuned rules. 
+
+\column
+\strong{Classical \& HPC partnership}
+- \strong{Physics-informed neural networks}: classical nets solve Schrödinger/PDE problems mesh-free — a foil to variational quantum solvers.
+- \strong{GPU acceleration}: state-vector \& tensor-network simulation, \strong{CUDA-Q / cuQuantum}, and my hybrid CV-DV simulator (github.com/helloluxi/cuda-cvdv).
+
+\strong{Security}
+- \strong{Post-quantum cryptography}: lattice-based schemes hardening today's systems against Shor's algorithm.
 \endcolumn
 
 
