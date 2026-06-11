@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="130" viewBox="0 0 200 130"
+     style="background:transparent" fill="none" stroke="currentColor" color="#000000">
+  <style>
+    .wire { stroke-width: 2.5; }
+    .link { stroke-width: 2.5; }
+    .ctrl { fill: currentColor; stroke: none; }
+    .targ { stroke-width: 3; }
+  </style>
+
+  <!-- control wire -->
+  <line class="wire" x1="20" y1="45" x2="180" y2="45"/>
+  <!-- target wire -->
+  <line class="wire" x1="20" y1="95" x2="180" y2="95"/>
+
+  <!-- vertical link -->
+  <line class="link" x1="100" y1="45" x2="100" y2="95"/>
+  <!-- control dot -->
+  <circle class="ctrl" cx="100" cy="45" r="8"/>
+  <!-- target: open circle with plus -->
+  <circle class="targ" cx="100" cy="95" r="17"/>
+  <line class="targ" x1="83"  y1="95" x2="117" y2="95"/>
+  <line class="targ" x1="100" y1="78" x2="100" y2="112"/>
+</svg>

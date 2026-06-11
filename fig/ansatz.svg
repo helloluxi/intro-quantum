@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="195" viewBox="0 0 430 195"
+     style="background:transparent" fill="none" stroke="currentColor" color="#000000">
+  <style>
+    .wire { stroke-width: 2; }
+    .link { stroke-width: 2; }
+    .ctrl { fill: currentColor; stroke: none; }
+    .targ { stroke-width: 2.5; }
+    .gate { fill: #dae8fc; stroke: #6c8ebf; stroke-width: 2; }
+  </style>
+
+  <!-- ===== wires (4 qubits) ===== -->
+  <line class="wire" x1="20" y1="30"  x2="410" y2="30"/>
+  <line class="wire" x1="20" y1="75"  x2="410" y2="75"/>
+  <line class="wire" x1="20" y1="120" x2="410" y2="120"/>
+  <line class="wire" x1="20" y1="165" x2="410" y2="165"/>
+
+  <!-- ===== Column A: single-qubit gates ===== -->
+  <rect class="gate" x="55" y="16"  width="30" height="28" rx="6"/>
+  <rect class="gate" x="55" y="61"  width="30" height="28" rx="6"/>
+  <rect class="gate" x="55" y="106" width="30" height="28" rx="6"/>
+  <rect class="gate" x="55" y="151" width="30" height="28" rx="6"/>
+
+  <!-- ===== Column B: entangle (q0-q1, q2-q3) ===== -->
+  <line class="link" x1="130" y1="30"  x2="130" y2="75"/>
+  <circle class="ctrl" cx="130" cy="30" r="6"/>
+  <circle class="targ" cx="130" cy="75" r="11"/>
+  <line class="targ" x1="119" y1="75" x2="141" y2="75"/>
+  <line class="targ" x1="130" y1="64" x2="130" y2="86"/>
+
+  <line class="link" x1="130" y1="120" x2="130" y2="165"/>
+  <circle class="ctrl" cx="130" cy="120" r="6"/>
+  <circle class="targ" cx="130" cy="165" r="11"/>
+  <line class="targ" x1="119" y1="165" x2="141" y2="165"/>
+  <line class="targ" x1="130" y1="154" x2="130" y2="176"/>
+
+  <!-- ===== Column C: single-qubit gates ===== -->
+  <rect class="gate" x="180" y="16"  width="30" height="28" rx="6"/>
+  <rect class="gate" x="180" y="61"  width="30" height="28" rx="6"/>
+  <rect class="gate" x="180" y="106" width="30" height="28" rx="6"/>
+  <rect class="gate" x="180" y="151" width="30" height="28" rx="6"/>
+
+  <!-- ===== Column D: entangle (q1-q2) ===== -->
+  <line class="link" x1="255" y1="75" x2="255" y2="120"/>
+  <circle class="ctrl" cx="255" cy="75" r="6"/>
+  <circle class="targ" cx="255" cy="120" r="11"/>
+  <line class="targ" x1="244" y1="120" x2="266" y2="120"/>
+  <line class="targ" x1="255" y1="109" x2="255" y2="131"/>
+
+  <!-- ===== Column E: single-qubit gates ===== -->
+  <rect class="gate" x="300" y="16"  width="30" height="28" rx="6"/>
+  <rect class="gate" x="300" y="61"  width="30" height="28" rx="6"/>
+  <rect class="gate" x="300" y="106" width="30" height="28" rx="6"/>
+  <rect class="gate" x="300" y="151" width="30" height="28" rx="6"/>
+
+  <!-- ===== Column F: entangle (q0-q1, q2-q3) ===== -->
+  <line class="link" x1="375" y1="30"  x2="375" y2="75"/>
+  <circle class="ctrl" cx="375" cy="30" r="6"/>
+  <circle class="targ" cx="375" cy="75" r="11"/>
+  <line class="targ" x1="364" y1="75" x2="386" y2="75"/>
+  <line class="targ" x1="375" y1="64" x2="375" y2="86"/>
+
+  <line class="link" x1="375" y1="120" x2="375" y2="165"/>
+  <circle class="ctrl" cx="375" cy="120" r="6"/>
+  <circle class="targ" cx="375" cy="165" r="11"/>
+  <line class="targ" x1="364" y1="165" x2="386" y2="165"/>
+  <line class="targ" x1="375" y1="154" x2="375" y2="176"/>
+</svg>

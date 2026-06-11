@@ -71,7 +71,33 @@ Quantum entanglement makes the dimension of the state space grow \strong{exponen
 \figure[.27]{pauli.png}{Pauli-X gate}
 \endrow
 
-\todo{Add controlled gate.}
+
+
+## Controlled Gates & Circuits
+
+\columns
+\row
+\figure[.6]{cnot.svg}{CNOT: $\ket{c}\ket{t}\mapsto\ket{c}\ket{t\oplus c}$, i.e. $\pmat{1&0&0&0\\0&1&0&0\\0&0&0&1\\0&0&1&0}$}
+\endrow
+
+\column
+\row
+\figure[.95]{ansatz.svg}{Single-qubit gates $+$ CNOTs $\Rightarrow$ any circuit}
+\endrow
+\endcolumn
+
+
+
+## Measurement
+
+A general quantum measurement is described by a \strong{positive operator-valued measure} (POVM) $\{ M_x \}$, satisfying $M_x \geq 0$ and $\sum_x M_x = I$.
+The probability of observing outcome $x$ is
+$$ p(x) = \tr(\rho M_x). $$
+
+\row
+\figure[.4]{interferometer.png}{}
+\endrow
+
 
 
 ## Noise
@@ -92,18 +118,6 @@ $$
 \figure[1]{mixed.png}{Mixed state under bit-flip noise}
 \endrow
 \endcolumn
-
-
-
-## Measurement
-
-A general quantum measurement is described by a \strong{positive operator-valued measure} (POVM) $\{ M_x \}$, satisfying $M_x \geq 0$ and $\sum_x M_x = I$.
-The probability of observing outcome $x$ is
-$$ p(x) = \tr(\rho M_x). $$
-
-\row
-\figure[.4]{interferometer.png}{}
-\endrow
 
 
 ## Grover Search Algorithm
