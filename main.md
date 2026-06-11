@@ -127,7 +127,7 @@ $$ p(x) = \tr(\rho M_x). $$
 
 
 
-## Classical vs. Quantum 
+## Why Quantum Accelerates?
 
 \row
 \figure[.85]{hypercube.jpg}{}
@@ -344,11 +344,46 @@ if and only if all singular values of $\bmp(z)$ lie in $[0,1]$ for $|z|\leq 1$.
 ## Why Simulation Becomes Expensive
 
 \columns
-\todo{Real Numbers?}
+A bosonic mode lives in an \strong{infinite-dimensional} space:
+$$\ket{\psi} = \sum_{j=0}^{\infty} c_j \ket{j}.$$
+
+To run it on qubits, we truncate and encode. In the natural \strong{Fock encoding}, even the ladder operator is dense:
+$$
+\hat{a}=\pmat{
+0 & 1 & 0 & \cdots \\
+0 & 0 & \sqrt{2} & \cdots \\
+0 & 0 & 0 & \cdots \\
+\vdots & \vdots & \vdots & \ddots
+}.
+$$
+So a simple displacement $\hat{D}(\alpha)=e^{\alpha\hat{a}^\dagger-\alpha^*\hat{a}}$ becomes a \strong{dense} matrix — cost \strong{exponential} in the qubits per mode.
 
 \column
 \row
 \figure[.75]{comp_power.svg}{$A\to B$: can hardware $A$ efficiently simulate processor $B$?}
+\endrow
+\endcolumn
+
+
+
+## The Fix: Position Encoding
+
+\columns
+Encode the \strong{wave function} on a grid instead of Fock levels:
+$$
+\mathrm{Enc}_Q(\ket{\psi}) = \sqrt{\lambda}\sum_{j} \psi(\lambda\tilde{j})\,\ket{j}.
+$$
+
+\strong{Key idea}:
+- Position-type gates $e^{it\hat{q}}$ are \strong{exact} on the position grid.
+- Momentum-type gates $e^{it\hat{p}}$ are \strong{exact} on the momentum grid.
+- A cheap quantum Fourier transform (QFT, $O(n^2)$ gates) hops between the two.
+
+The \strong{only} error comes from the QFT — and it is well controlled.
+
+\column
+\row
+\figure[1]{encodings.png}{Position vs. momentum encoding of a wave function.}
 \endrow
 \endcolumn
 
@@ -363,7 +398,7 @@ O\!\left(\log^2\!\left(\Gamma+\log\frac{1}{\epsilon}\right)\right)
 $$
 elementary gates per hybrid gate to precision $\epsilon$, where $\Gamma$ is the photon number cutoff.
 
-\todo{Interactive demos}
+This covers displacement, rotation, squeezing, beam splitter, and their qubit-conditional versions — an \strong{exponential} improvement over Fock encoding.
 
 \column
 \row
@@ -374,9 +409,9 @@ elementary gates per hybrid gate to precision $\epsilon$, where $\Gamma$ is the 
 
 
 
-## TODO: GPU simulation & Beyond
+## GPU Simulation & Beyond
 
-\todo{Placeholder: a one-page map of active quantum directions, beyond what this talk covers.}
+Simulating these qubit circuits classically is exactly what GPUs accelerate — how we test, scale, and benchmark new ideas before real hardware catches up.
 
 \columns
 - \strong{Quantum error correction (QEC)}: making noisy qubits reliable.
@@ -387,8 +422,6 @@ elementary gates per hybrid gate to precision $\epsilon$, where $\Gamma$ is the 
 - \strong{Cryptography}: Shor's algorithm and post-quantum security.
 - \strong{Simulation tooling}: CUDA-Q / cuQuantum and GPU-accelerated backends.
 \endcolumn
-
-\todo{Pick 2-3 to name aloud; use this to bridge into my own work.}
 
 
 ## 
