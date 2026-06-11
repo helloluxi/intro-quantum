@@ -105,7 +105,6 @@ $$ p(x) = \tr(\rho M_x). $$
 \endrow
 
 
-
 ## Grover Search Algorithm
 
 \columns
@@ -124,6 +123,15 @@ $$ p(x) = \tr(\rho M_x). $$
 \figure[.7]{grover.svg}{Geometric interpretation}
 \endrow
 \endcolumn
+
+
+
+
+## Classical vs. Quantum 
+
+\row
+\figure[.85]{hypercube.jpg}{}
+\endrow
 
 
 
