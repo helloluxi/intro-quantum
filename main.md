@@ -123,7 +123,7 @@ $$
 ## Grover Search Algorithm
 
 \columns
-\strong{Grover search} finds a marked item among $N$ unsorted items:
+\strong{Grover search} finds a marked item among $N$ unsorted items: \cite{Grover. "A fast quantum mechanical algorithm for database search." STOC 1996, pp. 212–219.}
 - A classical algorithm needs $O(N)$ queries.
 - Grover's algorithm needs only $O(\sqrt{N})$ queries.
 
@@ -139,6 +139,22 @@ $$
 \endrow
 \endcolumn
 
+
+
+## Shor's Algorithm: Breaking RSA
+
+\columns
+\strong{RSA} trusts that factoring a large $N = p \times q$ back into its primes is hard. \strong{Shor's algorithm} cracks it with an exponential speedup. \cite{Shor. "Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer." SIAM J. Comput. 26, 1484 (1997).}
+
+- \strong{Classically}: the 829-bit RSA-250 took $\sim$2,700 core-years. \cite{Boudot, Gaudry, Guillevic, Heninger, Thomé, and Zimmermann. "Comparing the difficulty of factorization and discrete logarithm: a 240-digit experiment." CRYPTO 2020.}
+- \strong{Ideal qubits}: as few as 1,730 logical qubits suffice for RSA-2048. \cite{Chevignard, Fouque, and Schrottenloher. "Reducing the Number of Qubits in Quantum Factoring." CRYPTO 2025 (eprint 2024/222).}
+- \strong{Noisy qubits}: RSA-2048 would fall in $<$ 1 week on $< 10^6$ physical qubits. \cite{Gidney. "How to factor 2048 bit RSA integers with less than a million noisy qubits." arXiv:2505.15917 (2025).}
+
+\column
+\row
+\figure[.95]{qpe.svg}{Quantum Phase Estimation: a core building block of Shor's algorithm}
+\endrow
+\endcolumn
 
 
 
@@ -376,7 +392,7 @@ $$
 - \strong{Squeeze}: $S(r)=e^{\frac{r}{2}(\hat a^2-\hat a^{\dagger2})}$
 - \strong{Beam splitter}: $\mathrm{BS}(\theta)=e^{-i\theta(\hat a^\dagger\hat b+\hat a\hat b^\dagger)}$ (two modes)
 
-<div style="text-align:center; margin-top:28px;"><a href="demo.html" target="_blank" style="display:inline-block; background:transparent; color:#2563eb; border:2px solid #2563eb; padding:12px 26px; border-radius:12px; text-decoration:none; font-weight:700; font-size:1.3em;">▶ Live demo: rolling wave function</a></div>
+<div style="text-align:center; margin-top:28px;"><a href="demo.html" target="_blank" style="display:inline-block; background:transparent; color:#2563eb; border:2px solid #2563eb; padding:12px 26px; border-radius:12px; text-decoration:none; font-weight:700; font-size:1.3em;">▶ Live demo</a></div>
 \endcolumn
 
 
