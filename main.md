@@ -100,26 +100,6 @@ $$ p(x) = \tr(\rho M_x). $$
 
 
 
-## Noise
-
-\columns
-A \strong{density operator} describes a quantum state that may include classical uncertainty:
-$$
-\rho = \sum_k p_k \ket{\psi_k}\bra{\psi_k}.
-$$
-
-- Pure state: $\rho = \ket{\psi}\bra{\psi}$.
-- Mixed state: a probability mixture of possible states.
-- Noise and evolution are modeled by \strong{quantum channels}:
-  $$\rho \mapsto \mathcal{E}(\rho).$$
-
-\column
-\row
-\figure[1]{mixed.png}{Mixed state under bit-flip noise}
-\endrow
-\endcolumn
-
-
 ## Grover Search Algorithm
 
 \columns
@@ -224,6 +204,27 @@ $$
 
 - HL: $I = \log N + o(\log N)$; SQL: $I = \frac{1}{2}\log N + o(\log N)$. \cite{Hassani, Macchiavello and Maccone. "Digital Quantum Estimation." PRL 119, 200502 (2017).}
 
+\endcolumn
+
+
+
+## Noise
+
+\columns
+A \strong{density operator} describes a quantum state that may include classical uncertainty:
+$$
+\rho = \sum_k p_k \ket{\psi_k}\bra{\psi_k}.
+$$
+
+- Pure state: $\rho = \ket{\psi}\bra{\psi}$.
+- Mixed state: a probability mixture of possible states.
+- Noise and evolution are modeled by \strong{quantum channels}:
+  $$\rho \mapsto \mathcal{E}(\rho).$$
+
+\column
+\row
+\figure[1]{mixed.png}{Mixed state under bit-flip noise}
+\endrow
 \endcolumn
 
 
