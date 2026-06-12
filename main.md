@@ -480,19 +480,16 @@ Two numbers decide what a quantum computer can do: \strong{how many qubits} and 
 
 ## Other Topics: Quantum Still Runs on Classical Compute
 
-Every stage of quantum research leans on classical horsepower — and the GPU is the engine behind it.
 
-- \strong{State preparation}: loading data or an ansatz into a circuit is itself a classical optimization problem.
-- \strong{Gate compilation}: transpiling a circuit onto a hardware ISA — and translating across ISAs (qubit, oscillator, hybrid) — is heavy classical search.
-- \strong{Hamiltonian simulation}: compiling $e^{-iHt}$ via Trotter / QSP means computing phase factors and step counts offline, at high precision.
+- \strong{State preparation}, \strong{Gate compilation}, \strong{Hamiltonian simulation}, \strong{Block Encoding}...
+  - Every stage of quantum research leans on classical horsepower — and the GPU is the engine behind it: state-vector simulator, tensor-network simulator, density-matrix simulator.
 - \strong{Quantum AI}: quantum circuits as learning models.
-  - \strong{VQE / QAOA}: variational circuits trained by a classical loop for ground-state energies and combinatorial optimization.
-  - \strong{QNN}: parameterized circuits as trainable networks, with quantum kernels and data re-uploading.
+  - \strong{VQE / QAOA}: variational circuits trained by a classical loop for ground-state energies and combinatorial optimization. \cite{Peruzzo, McClean, Shadbolt, et al. "A variational eigenvalue solver on a photonic quantum processor." Nature Communications 5, 4213 (2014).} \cite{Farhi, Goldstone, and Gutmann. "A Quantum Approximate Optimization Algorithm." arXiv:1411.4028 (2014).}
+  - \strong{QNN}: parameterized circuits as trainable networks, with quantum kernels and data re-uploading. \cite{Havlíček, Córcoles, Temme, et al. "Supervised learning with quantum-enhanced feature spaces." Nature 567, 209 (2019).}
 - \strong{AI for quantum}: neural networks serving the machine, all trained on a fast GPU backend.
-  - \strong{Neural quantum states}: network ansätze solve the many-body Schrödinger equation, rivaling tensor networks.
-  - \strong{AI decoders}: networks like \strong{AlphaQubit} read error syndromes faster and more accurately than hand-tuned matching.
-  - \strong{Control & compilation}: ML shapes control pulses, synthesizes circuits, and finds QSP phase factors.
-
+  - \strong{Neural quantum states}: network ansätze solve the many-body Schrödinger equation, rivaling tensor networks. \cite{Carleo and Troyer. "Solving the quantum many-body problem with artificial neural networks." Science 355, 602 (2017).}
+  - \strong{AI decoders}: networks like \strong{AlphaQubit} and \strong{NVIDIA Ising} read error syndromes faster and more accurately than hand-tuned matching. \cite{Bausch, Senior, Heras, et al. "Learning high-accuracy error decoding for quantum processors." Nature 636, 834 (2024).} \cite{NVIDIA. "Ising: open AI models for quantum processor calibration and error-correction decoding." https://www.nvidia.com/en-us/solutions/quantum-computing/ising (2026).}
+  - \strong{Control & compilation}: ML shapes control pulses, synthesizes circuits... \cite{Niu, Boixo, Smelyanskiy, and Neven. "Universal quantum control through deep reinforcement learning." npj Quantum Information 5, 33 (2019).} \cite{Ruiz, Laakkonen, Bausch, et al. "Quantum circuit optimization with AlphaTensor." Nature Machine Intelligence (2025), arXiv:2402.14396.}
 ## 
 
 &nbsp;
