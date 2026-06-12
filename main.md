@@ -254,7 +254,7 @@ $$
 
 Many computational tasks involve operating on matrices:
 
-- \strong{Hamiltonian simulation}: compute $e^{-iHt}$.
+- \strong{(Time-independent) Hamiltonian simulation}: compute $e^{-iHt}$.
 - \strong{Linear systems}: solve $Ax = b$.
 - \strong{Eigenvalue / SVD}: decompose $A = U\Sigma V^\dagger$.
 - \strong{Matrix multiplication}: compute $AB$.
@@ -318,7 +318,7 @@ $$
 
 
 
-## My Work: U(N)-QSP/QSVT
+## U(N)-QSP/QSVT
 
 \columns[6fr 4fr]
 \strong{Motivation}:
@@ -370,7 +370,7 @@ Quantum machines are built from different physical systems, each with its own st
 \figure[.84]{hybrid_intro.png}{}
 \endrow
 - Qubits coupled to oscillators.
-- Best of both — the new frontier.
+- A new frontier.
 \endcolumn
 
 
@@ -444,7 +444,7 @@ Each machine exposes its own \strong{instruction set architecture (ISA)} — the
 
 
 
-## My Work: Efficient Qubit Simulation of Hybrid CV-DV Processor
+## Efficient Qubit Simulation of Hybrid CV-DV Processor
 
 \strong{My result} \cite{Lu, Bakalov, and Liu. "Efficient Qubit Simulation of Hybrid Oscillator-Qubit Quantum Processors." (2025).}: Phase-space ISA can be emulated on qubits with CNOT+rotation ISA with complexity
 $$
